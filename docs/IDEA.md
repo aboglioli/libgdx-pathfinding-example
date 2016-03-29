@@ -27,7 +27,7 @@ También me gustaría agregar muchas más entidades y posibilidades.
 
 Por ahora será de supervivencia de un sólo usuario.
 
-## TODO
+# Agenda
 
 ## Domingo, 27 de Marzo de 2016
 Aún no tengo el nombre del juego, pero creo que más adelante podré decidirlo sin

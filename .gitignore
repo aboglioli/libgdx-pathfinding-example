@@ -1,10 +1,9 @@
 ## Extras
 art/
 tools/
-*.jar
 
 ## Java
-
+*.jar
 *.class
 *.war
 *.ear
@@ -60,7 +59,6 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-
 .gradle
 gradle-app.setting
 build/
