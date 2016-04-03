@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kiriost.game.AppGame;
+import com.kiriost.game.actor.Civilian;
 import com.kiriost.game.actor.Terrain;
-import com.kiriost.game.debug.actor.Ghost;
-import com.kiriost.game.debug.actor.Grid;
+import com.kiriost.game.actor.Zombie;
 
 /**
  * Created by kiriost on 29/03/16.
@@ -19,20 +17,26 @@ import com.kiriost.game.debug.actor.Grid;
 public class GameScreen extends ScreenAdapter {
     private AppGame game;
     private Stage stage;
-    private Actor debugGrid, terrain, ghost;
+    private Actor terrain, civilian, zombie;
 
     public GameScreen(AppGame game) {
+        this.game = game;
+
         stage = new Stage(new ScreenViewport());
 
         terrain = new Terrain();
-        ghost = new Ghost();
-        debugGrid = new Grid();
+        civilian = new Civilian();
+        zombie = new Zombie();
+        zombie.setPosition(150f, 150f);
 
+        // Terrain
         stage.addActor(terrain);
-        stage.addActor(ghost);
-        stage.addActor(debugGrid);
 
-        stage.setKeyboardFocus(debugGrid);
+        // Resources
+
+        // Actors
+        stage.addActor(civilian);
+        stage.addActor(zombie);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -60,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, false);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
