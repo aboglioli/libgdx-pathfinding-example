@@ -1,4 +1,4 @@
-package com.kiriost.game.actor;
+package com.kiriost.game.gameobject.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -13,15 +13,17 @@ import com.kiriost.game.debug.actor.Grid;
  * Created by kiriost on 02/04/16.
  */
 public class Terrain extends Actor {
-    private final int terrainRows = 64;
-    private final int terrainCols = 32;
+    private final int terrainRows = 128;
+    private final int terrainCols = 128;
     private final int square = 16;
     private Texture texture;
     private TextureRegion textureRegion;
     private Grid grid;
 
+    private final boolean DEBUG = false;
+
     public Terrain() {
-        texture = new Texture("terrain_tiles.png");
+        texture = new Texture("map/terrain_tiles.png");
         textureRegion = new TextureRegion(texture, 0, 0, 143, 143);
 
         grid = new Grid(terrainRows, terrainCols, square);
@@ -54,7 +56,8 @@ public class Terrain extends Actor {
             }
         }
 
-        grid.draw(batch, getX(), getY());
+        if (DEBUG)
+            grid.draw(batch, getX(), getY());
 
     }
 }

@@ -2,14 +2,16 @@ package com.kiriost.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kiriost.game.AppGame;
-import com.kiriost.game.actor.Civilian;
-import com.kiriost.game.actor.Terrain;
-import com.kiriost.game.actor.Zombie;
+import com.kiriost.game.gameobject.character.Civilian;
+import com.kiriost.game.gameobject.map.Terrain;
+import com.kiriost.game.gameobject.npc.Zombie;
 
 /**
  * Created by kiriost on 29/03/16.
@@ -17,28 +19,31 @@ import com.kiriost.game.actor.Zombie;
 public class GameScreen extends ScreenAdapter {
     private AppGame game;
     private Stage stage;
-    private Actor terrain, civilian, zombie;
 
     public GameScreen(AppGame game) {
         this.game = game;
 
         stage = new Stage(new ScreenViewport());
 
-        terrain = new Terrain();
-        civilian = new Civilian();
-        zombie = new Zombie();
-        zombie.setPosition(150f, 150f);
-
-        // Terrain
+        Actor terrain = new Terrain();
         stage.addActor(terrain);
 
-        // Resources
+        for (int i = 0; i < 4; i++) {
+            Actor civilian = new Civilian();
+            civilian.setPosition(MathUtils.random(200), MathUtils.random(200));
+            stage.addActor(civilian);
+        }
 
-        // Actors
-        stage.addActor(civilian);
-        stage.addActor(zombie);
+        for (int i = 0; i < 3; i++) {
+            Actor zombie = new Zombie();
+            zombie.setPosition(MathUtils.random(500), MathUtils.random(500));
+            stage.addActor(zombie);
+        }
 
-        Gdx.input.setInputProcessor(stage);
+        // InputProcessors
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(stage);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
