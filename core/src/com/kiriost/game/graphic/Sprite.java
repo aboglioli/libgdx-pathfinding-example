@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Created by kiriost on 03/04/16.
  */
-public class Animation implements IDrawable {
+public class Sprite {
+    protected com.badlogic.gdx.graphics.g2d.Animation animation;
     // Graphics and animation
     private TextureRegion[] textureRegions;
 
-    protected com.badlogic.gdx.graphics.g2d.Animation animation;
-
-    public Animation(String texture, int tileWidth, int tileHeight, float frameDuration) {
+    public Sprite(String texture, int tileWidth, int tileHeight, float frameDuration) {
         TextureRegion[][] temp = TextureRegion.split(new Texture("sprite/" + texture), tileWidth, tileHeight);
 
         textureRegions = new TextureRegion[temp.length * temp[0].length];
@@ -26,13 +25,13 @@ public class Animation implements IDrawable {
         animation = new com.badlogic.gdx.graphics.g2d.Animation(frameDuration, textureRegions);
     }
 
-    @Override
-    public TextureRegion getTexture(float duration) {
+    public TextureRegion getCurrentFrame(float duration) {
         return animation.getKeyFrame(duration, true);
     }
 
-    @Override
-    public TextureRegion getStaticTexture(int index) {
+    public TextureRegion getFrame(int index) {
+        if (index >= textureRegions.length)
+            return textureRegions[textureRegions.length - 1];
         return textureRegions[index];
     }
 }

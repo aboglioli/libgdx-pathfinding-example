@@ -1,4 +1,4 @@
-package com.kiriost.game.global;
+package com.kiriost.game;
 
 /**
  * Created by kiriost on 01/04/16.

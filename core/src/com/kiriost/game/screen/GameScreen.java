@@ -4,45 +4,36 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kiriost.game.AppGame;
-import com.kiriost.game.gameobject.character.Civilian;
-import com.kiriost.game.gameobject.map.Terrain;
-import com.kiriost.game.gameobject.npc.Zombie;
+import com.kiriost.game.manager.LoadManager;
 
 /**
  * Created by kiriost on 29/03/16.
  */
 public class GameScreen extends ScreenAdapter {
     private AppGame game;
+    private LoadManager loader;
+
     private Stage stage;
+    private Camera camera;
+    private Viewport viewport;
+
+    private int cameraTranslateModifier = 1;
 
     public GameScreen(AppGame game) {
         this.game = game;
 
-        stage = new Stage(new ScreenViewport());
-
-        Actor terrain = new Terrain();
-        stage.addActor(terrain);
-
-        for (int i = 0; i < 4; i++) {
-            Actor civilian = new Civilian();
-            civilian.setPosition(MathUtils.random(200), MathUtils.random(200));
-            stage.addActor(civilian);
-        }
-
-        for (int i = 0; i < 3; i++) {
-            Actor zombie = new Zombie();
-            zombie.setPosition(MathUtils.random(500), MathUtils.random(500));
-            stage.addActor(zombie);
-        }
+        // Load game objects
+        loader = LoadManager.getInstance();
+        stage = loader.getStage();
+        camera = stage.getCamera();
+        viewport = stage.getViewport();
 
         // InputProcessors
         InputMultiplexer inputMultiplexer = new InputMultiplexer(stage);
-
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -53,27 +44,35 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        stage.act();
+        stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            stage.getCamera().translate(-8f, 0f, 0f);
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            stage.getCamera().translate(8f, 0f, 0f);
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            stage.getCamera().translate(0f, -8f, 0f);
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP))
-            stage.getCamera().translate(0f, 8f, 0f);
+        // Camera movements
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+            cameraTranslateModifier = 4;
+        else
+            cameraTranslateModifier = 1;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && camera.position.x >= 0) {
+            camera.translate(-8f * cameraTranslateModifier, 0f, 0f);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && camera.position.x <= 1024) {
+            camera.translate(8f * cameraTranslateModifier, 0f, 0f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && camera.position.y >= 0) {
+            camera.translate(0f, -8f * cameraTranslateModifier, 0f);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP) && camera.position.y <= 1024) {
+            camera.translate(0f, 8f * cameraTranslateModifier, 0f);
+        }
 
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        viewport.update(width, height, false);
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        loader.dispose();
     }
 }

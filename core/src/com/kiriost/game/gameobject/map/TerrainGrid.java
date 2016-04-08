@@ -1,4 +1,4 @@
-package com.kiriost.game.debug.actor;
+package com.kiriost.game.gameobject.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -6,19 +6,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 /**
  * Created by kiriost on 02/04/16.
  */
-public class Grid {
+public class TerrainGrid {
     private ShapeRenderer shapeRenderer;
-    private int terrainRows, terrainCols, square;
 
-    public Grid(int terrainRows, int terrainCols, int square) {
+    public TerrainGrid() {
         shapeRenderer = new ShapeRenderer();
-
-        this.terrainRows = terrainRows;
-        this.terrainCols = terrainCols;
-        this.square = square;
     }
 
-    public void draw(Batch batch, float terrainX, float terrainY) {
+    public void draw(Batch batch, float terrainX, float terrainY, float terrainWidth, float terrainHeight, float square) {
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -26,8 +21,8 @@ public class Grid {
         shapeRenderer.setColor(0.4f, 0.2f, 0.2f, 0.5f);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        int width = terrainRows * square;
-        int height = terrainCols * square;
+        float width = terrainWidth;
+        float height = terrainHeight;
         for (int i = 0; i < width; i += square) {
             shapeRenderer.line(i, terrainY, i, height);
         }
