@@ -3,7 +3,6 @@ package com.kiriost.game.gameobject.character;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Align;
 import com.kiriost.game.manager.SpriteManager;
 
 /**
@@ -26,10 +25,6 @@ public abstract class CharacterView {
         update(character.getStatus(), character.getDelta());
 
         batch.setColor(character.getColor());
-//        batch.draw(currentFrame, character.getX() - character.getWidth() / 2, character.getY() - character.getHeight() / 2,
-//                character.getOriginX(), character.getOriginY(),
-//                character.getWidth(), character.getHeight(), character.getScaleX(), character.getScaleY(),
-//                character.getRotation());
         batch.draw(currentFrame, character.getX(), character.getY(),
                 character.getOriginX(), character.getOriginY(),
                 character.getWidth(), character.getHeight(), character.getScaleX(), character.getScaleY(),

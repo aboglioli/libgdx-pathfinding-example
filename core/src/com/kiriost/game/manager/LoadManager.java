@@ -20,7 +20,6 @@ public class LoadManager implements Disposable {
     private LoadManager() {
         stage = new Stage(new ScreenViewport());
 //        stage.getBatch().disableBlending();
-
     }
 
     public static LoadManager getInstance() {

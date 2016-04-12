@@ -4,11 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public abstract class Character extends CharacterAdapter {
+public abstract class Character extends Actor {
     private CharacterView view;
 
     private float delta;
@@ -30,25 +31,14 @@ public abstract class Character extends CharacterAdapter {
         setHeight(50f);
         setBounds(0, 0, getWidth(), getHeight());
 
-        setOrigin(getWidth() / 2, getHeight() / 2);
+        setOrigin(Align.center);
     }
 
     public void move(float x, float y) {
-        moveDirection.set(x - getX(), y - getY());
+        moveDirection.set(x - (getX() + getOriginX()), y - (getY() + getOriginY()));
         setRotation(moveDirection.angle() + 90);
 
-//        moveDirection.set(x - getX(), y - getY());
-//        setRotation(moveDirection.angle() + 90);
-//
-//        Vector2 center = getCenter();
-////        setPosition(getX() - center.x, getY() - center.y);
-//
-//        moveDirection.sub(center.x, center.y);
-//
-//        clicked.set(getX() + moveDirection.x - 5, getY() + moveDirection.y - 5, 10, 10);
-//
-//        System.out.println("MoveBy: " + moveDirection);
-//        System.out.println("- Rectangle: " + clicked);
+        clicked.set(getX() + getOriginX() + moveDirection.x - 5, getY() + getOriginY() + moveDirection.y - 5, 10, 10);
 
         moveDirection.nor();
         moving = true;
@@ -73,22 +63,14 @@ public abstract class Character extends CharacterAdapter {
         }
     }
 
-    public float getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
-    }
-
     protected void updatePosition(float delta) {
-        if (moving && false) {
+        if (moving) {
             float x = getX();
             float y = getY();
             float moveX = moveDirection.x * velocity * delta;
             float moveY = moveDirection.y * velocity * delta;
             setPosition(x + moveX, y + moveY);
-            if (clicked.contains(getX(), getY())) {
+            if (clicked.contains(getX() + getOriginX(), getY() + getOriginY())) {
                 moving = false;
             }
         }
