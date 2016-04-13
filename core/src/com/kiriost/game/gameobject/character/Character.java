@@ -17,8 +17,9 @@ public abstract class Character extends Actor {
 
     private Vector2 moveDirection;
     private Rectangle clicked;
-    private boolean moving = false;
     private float velocity = 240f;
+
+    private boolean moving = false;
 
     public Character(CharacterView view) {
         super();
@@ -27,21 +28,11 @@ public abstract class Character extends Actor {
         moveDirection = new Vector2();
         clicked = new Rectangle();
 
-        setWidth(50f);
-        setHeight(50f);
+        setWidth(64f);
+        setHeight(64f);
         setBounds(0, 0, getWidth(), getHeight());
 
         setOrigin(Align.center);
-    }
-
-    public void move(float x, float y) {
-        moveDirection.set(x - (getX() + getOriginX()), y - (getY() + getOriginY()));
-        setRotation(moveDirection.angle() + 90);
-
-        clicked.set(getX() + getOriginX() + moveDirection.x - 5, getY() + getOriginY() + moveDirection.y - 5, 10, 10);
-
-        moveDirection.nor();
-        moving = true;
     }
 
     public float getDelta() {
@@ -63,23 +54,32 @@ public abstract class Character extends Actor {
         }
     }
 
+    public void move(float x, float y) {
+        moveDirection.set(x - (getX() + getOriginX()), y - (getY() + getOriginY()));
+        setRotation(moveDirection.angle() + 90);
+
+        clicked.set(getX() + getOriginX() + moveDirection.x - 5, getY() + getOriginY() + moveDirection.y - 5, 10, 10);
+
+        moveDirection.nor();
+        moving = true;
+        movementStarted();
+    }
+
     protected void updatePosition(float delta) {
         if (moving) {
             float x = getX();
             float y = getY();
-            float moveX = moveDirection.x * velocity * delta;
-            float moveY = moveDirection.y * velocity * delta;
-            setPosition(x + moveX, y + moveY);
+            x += moveDirection.x * velocity * delta;
+            y += moveDirection.y * velocity * delta;
+            setPosition(x, y);
             if (clicked.contains(getX() + getOriginX(), getY() + getOriginY())) {
                 moving = false;
+                movementFinished();
             }
         }
     }
 
     protected abstract void update(float delta);
-
-    protected void statusChanged() {
-    }
 
     @Override
     public void act(float delta) {
@@ -93,5 +93,14 @@ public abstract class Character extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         view.draw(this, batch, parentAlpha);
+    }
+
+    protected void statusChanged() {
+    }
+
+    protected void movementStarted() {
+    }
+
+    protected void movementFinished() {
     }
 }

@@ -32,14 +32,26 @@ public class Player extends Character implements ITerrainObserver {
 
     @Override
     protected void statusChanged() {
-        if (getStatus().equals("selected")) {
+        if (getStatus().equals("selected") || getStatus().equals("walk")) {
             if (selected != null) {
-                selected.setStatus("idle");
                 terrain.unsubscribe(selected);
             }
             selected = this;
             terrain.subscribe(this);
         }
+    }
+
+    @Override
+    protected void movementStarted() {
+        setStatus("walk");
+    }
+
+    @Override
+    protected void movementFinished() {
+        if(selected == this)
+            setStatus("selected");
+        else
+            setStatus("idle");
     }
 
     @Override
