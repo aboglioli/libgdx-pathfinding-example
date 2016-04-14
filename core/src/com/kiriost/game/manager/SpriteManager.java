@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.kiriost.game.graphic.Sprite;
 
+import java.io.FileNotFoundException;
+
 /**
  * Created by kiriost on 04/04/16.
  */
@@ -22,11 +24,11 @@ public class SpriteManager {
         this.prefix = characterName + "_";
     }
 
-    public void loadSprite(String animationName, int width, int height, float frameDuration) {
+    public void loadSprite(String animationName, int width, int height, float frameDuration) throws FileNotFoundException {
         if (!animations.containsKey(prefix + animationName)) {
-            Sprite animation = new Sprite(prefix + animationName + ".png", width, height, frameDuration);
+            Sprite animation = new Sprite(prefix + animationName, width, height, frameDuration);
             if (animation == null)
-                throw new NullPointerException("Sprite file was not found");
+                throw new FileNotFoundException("Sprite file was not found");
 
             animations.put(prefix + animationName, animation);
         }
