@@ -10,13 +10,13 @@ public class NpcView extends CharacterView {
         super(name);
         try {
             spriteManager.loadSprite("walk", 256, 256, 0.2f);
-        } catch(Exception exc) {
+        } catch (Exception exc) {
             System.out.println(exc.getMessage());
         }
     }
 
     @Override
-    public void update(String characterStatus, boolean selected, float delta) {
+    public void update(String characterStatus, boolean selected, boolean moving, float delta) {
         currentFrame = spriteManager.getCurrentFrame(characterStatus, delta);
     }
 }

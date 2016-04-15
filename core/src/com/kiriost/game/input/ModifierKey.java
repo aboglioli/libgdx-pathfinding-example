@@ -13,6 +13,7 @@ public class ModifierKey extends InputAdapter {
     public static boolean UP = false;
     public static boolean DOWN = false;
     public static boolean L_CONTROL = false;
+    public static boolean F12 = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -34,6 +35,9 @@ public class ModifierKey extends InputAdapter {
                 break;
             case Input.Keys.CONTROL_LEFT:
                 L_CONTROL = true;
+                break;
+            case Input.Keys.F12:
+                F12 = !F12;
                 break;
             default:
                 return false;

@@ -8,8 +8,8 @@ import com.kiriost.game.mechanic.IUpdatable;
  * Created by kiriost on 14/04/16.
  */
 public class CameraManager implements IUpdatable {
-    private Camera camera;
     float limitX, limitY;
+    private Camera camera;
     private int cameraTranslateModifier = 1;
 
     public CameraManager(Camera camera, float limitX, float limitY) {
@@ -20,7 +20,6 @@ public class CameraManager implements IUpdatable {
 
     @Override
     public void update(float delta) {
-
         // Camera movements
         if (ModifierKey.L_SHIFT)
             cameraTranslateModifier = 4;

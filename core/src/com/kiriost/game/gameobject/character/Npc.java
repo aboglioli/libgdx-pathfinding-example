@@ -2,8 +2,6 @@ package com.kiriost.game.gameobject.character;
 
 import com.kiriost.game.gameobject.character.basic.Character;
 
-import java.lang.*;
-
 /**
  * Created by kiriost on 02/04/16.
  */

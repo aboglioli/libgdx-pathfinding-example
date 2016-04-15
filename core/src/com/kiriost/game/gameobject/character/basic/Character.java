@@ -1,12 +1,12 @@
 package com.kiriost.game.gameobject.character.basic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.util.Grid;
+import com.kiriost.game.manager.WorldManager;
 
 /**
  * Created by kiriost on 02/04/16.
@@ -17,13 +17,12 @@ public abstract class Character extends Actor {
     private float delta;
     private String status = new String();
 
+    private Rectangle limits;
+
     private Array<Movement> movements;
-
     private float velocity = 240f;
-
     private boolean moving = false;
     private boolean selected = false;
-    private float maxDistance = 0;
 
     public Character(CharacterView view) {
         super();
@@ -35,7 +34,18 @@ public abstract class Character extends Actor {
         setHeight(64f);
         setBounds(0, 0, getWidth(), getHeight());
 
+        limits = new Rectangle(getX() + 8, getY() + 13, getWidth() - 16, getHeight() - 26);
+
         setOrigin(Align.center);
+    }
+
+    @Override
+    protected void positionChanged() {
+        limits.setPosition(getX() + 8, getY() + 13);
+    }
+
+    public boolean isMoving() {
+        return moving;
     }
 
     public boolean isSelected() {
@@ -52,16 +62,12 @@ public abstract class Character extends Actor {
         selectChanged();
     }
 
+    public Rectangle getLimits() {
+        return limits;
+    }
+
     public float getDelta() {
         return delta;
-    }
-
-    public float getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
     }
 
     public String getStatus() {
@@ -75,8 +81,8 @@ public abstract class Character extends Actor {
         }
     }
 
-    public boolean isMoving() {
-        return moving;
+    public boolean collide(Character character) {
+        return limits.overlaps(character.limits);
     }
 
     public Movement[] getMovements() {
@@ -85,24 +91,19 @@ public abstract class Character extends Actor {
 
     public void move(float x, float y) {
         Movement movement = new Movement();
-        if(moving && ModifierKey.L_SHIFT) {
+        if (moving && ModifierKey.L_SHIFT) {
             Movement lastMovement = movements.get(movements.size - 1);
 
-            movement.destination.set(Grid.normalize(x), Grid.normalize(y));
-            movement.direction.set(movement.destination.x - lastMovement.destination.x,
-                    movement.destination.y - lastMovement.destination.y);
-            movement.direction.nor();
+            movement.setDestination(lastMovement.getDestination().x, lastMovement.getDestination().y,
+                    x, y);
 
             movements.add(movement);
-        }
-        else {
-            if(moving) {
+        } else {
+            if (moving) {
                 movements.clear();
             }
-            movement.destination.set(Grid.normalize(x), Grid.normalize(y));
-            movement.direction.set(movement.destination.x - (getX() + getOriginX()),
-                    movement.destination.y - (getY() + getOriginY()));
-            movement.direction.nor();
+
+            movement.setDestination(getX() + getOriginX(), getY() + getOriginY(), x, y);
 
             moving = true;
             movements.add(movement);
@@ -115,29 +116,33 @@ public abstract class Character extends Actor {
             Movement movement = movements.first();
             float x = getX();
             float y = getY();
-            float incX = movement.direction.x * velocity * delta;
-            float incY = movement.direction.y * velocity * delta;
-            x += incX;
-            y += incY;
+            float incX = movement.getDirection().x * velocity * delta;
+            float incY = movement.getDirection().y * velocity * delta;
 
-            setPosition(x, y);
+            setPosition(x + incX, y + incY);
 
-            float distance = movement.destination.dst(getX() + getOriginX(), getY() + getOriginY());
+            boolean collide = WorldManager.getInstance().collide(this);
 
-            if (distance < 32) {
+            if (collide)
+                setPosition(x, y);
+
+            movement.moved(incX, incY);
+
+            if (collide) {
+                movements.clear();
+                movementFinished();
+                moving = false;
+            } else if (!movement.nextMovement()) {
                 movements.removeValue(movement, true);
                 movementFinished();
                 if (movements.size == 0) {
                     moving = false;
-                }
-                else {
+                } else {
                     movementStarted();
                 }
             }
         }
     }
-
-    protected abstract void update(float delta);
 
     protected void statusChanged() {
     }
@@ -146,7 +151,7 @@ public abstract class Character extends Actor {
     }
 
     protected void movementStarted() {
-        setRotation(movements.first().direction.angle() + 90);
+        setRotation(movements.first().getDirection().angle() + 90);
     }
 
     protected void movementFinished() {
@@ -165,4 +170,6 @@ public abstract class Character extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         view.draw(this, batch, parentAlpha);
     }
+
+    protected abstract void update(float delta);
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.kiriost.game.input.ModifierKey;
 import com.kiriost.game.manager.ConfigManager;
 
 /**
@@ -26,7 +27,6 @@ public class TerrainView {
 
         texture = new Texture("map/terrain_tiles.png");
         tiles = TextureRegion.split(texture, 144, 144);
-        System.out.printf(tiles.length + " -- " + tiles[0].length);
 
         square = 64;
     }
@@ -47,7 +47,7 @@ public class TerrainView {
             }
         }
 
-        if (debug)
+        if (debug || ModifierKey.F12)
             terrainViewDebug.draw(terrain, batch);
     }
 }

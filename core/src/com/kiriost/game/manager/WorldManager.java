@@ -3,6 +3,7 @@ package com.kiriost.game.manager;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.gameobject.character.Npc;
 import com.kiriost.game.gameobject.character.Player;
+import com.kiriost.game.gameobject.character.basic.Character;
 import com.kiriost.game.gameobject.map.ITerrainObserver;
 import com.kiriost.game.gameobject.map.Terrain;
 import com.kiriost.game.input.ModifierKey;
@@ -50,14 +51,32 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
     }
 
     public void setSelectedPlayer(Player selectedPlayer) {
-        if(!ModifierKey.L_SHIFT) {
+        if (!ModifierKey.L_SHIFT) {
             for (int i = 0; i < players.size; i++) {
                 Player player = players.get(i);
-                if(player != selectedPlayer) {
+                if (player != selectedPlayer) {
                     player.deselect();
                 }
             }
         }
+    }
+
+    public boolean collide(Character character) {
+        for (int i = 0; i < players.size; i++) {
+            Character player = players.get(i);
+            if (character == player)
+                continue;
+            if (character.collide(player)) {
+                return true;
+            }
+        }
+        for (int i = 0; i < npcs.size; i++) {
+            Character npc = npcs.get(i);
+            if (character.collide(npc)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

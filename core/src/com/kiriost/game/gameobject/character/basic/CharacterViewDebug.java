@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by kiriost on 13/04/16.
@@ -21,42 +19,53 @@ public class CharacterViewDebug {
     }
 
     public void draw(Character character, Batch batch) {
+        batch.end();
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+
+        shapeRenderer.setColor(Color.LIGHT_GRAY);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(character.getX(), character.getY(), character.getWidth(), character.getHeight());
+        shapeRenderer.end();
+
+        shapeRenderer.setColor(Color.GOLDENROD);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(character.getLimits().x, character.getLimits().y, character.getLimits().width,
+                character.getLimits().height);
+        shapeRenderer.end();
+
         if (character.isMoving()) {
             Movement[] movements = character.getMovements();
 
-            batch.end();
-
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-            shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-
-            shapeRenderer.setColor(color);
+            shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.line(character.getX() + character.getOriginX(), character.getY() + character.getOriginY(),
-                    movements[0].destination.x,
-                    movements[0].destination.y);
+                    movements[0].getDestination().x,
+                    movements[0].getDestination().y);
             shapeRenderer.end();
 
             shapeRenderer.setColor(1f, 0f, 0f, 1);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(movements[0].destination.x, movements[0].destination.y, 3);
+            shapeRenderer.circle(movements[0].getDestination().x, movements[0].getDestination().y, 3);
             shapeRenderer.end();
 
             for (int i = 1; i < movements.length; i++) {
                 shapeRenderer.setColor(color);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.line(movements[i-1].destination.x, movements[i-1].destination.y,
-                        movements[i].destination.x,
-                        movements[i].destination.y);
+                shapeRenderer.line(movements[i - 1].getDestination().x, movements[i - 1].getDestination().y,
+                        movements[i].getDestination().x,
+                        movements[i].getDestination().y);
                 shapeRenderer.end();
 
-                shapeRenderer.setColor(1f, 0f, 0f, 0.5f);
+                shapeRenderer.setColor(Color.RED);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.circle(movements[i].destination.x, movements[i].destination.y, 3);
+                shapeRenderer.circle(movements[i].getDestination().x, movements[i].getDestination().y, 3);
                 shapeRenderer.end();
             }
 
-            batch.begin();
         }
 
+        batch.begin();
     }
 }

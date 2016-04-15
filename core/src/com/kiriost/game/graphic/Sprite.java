@@ -9,11 +9,10 @@ import com.kiriost.game.manager.ConfigManager;
  * Created by kiriost on 03/04/16.
  */
 public class Sprite {
-    protected com.badlogic.gdx.graphics.g2d.Animation animation;
-    private TextureRegion[] textureRegions;
-
     private static final String spriteFolder = ConfigManager.getInstance().getProperty("spriteFolder");
     private static final String spriteExtension = ConfigManager.getInstance().getProperty("spriteExtension");
+    protected com.badlogic.gdx.graphics.g2d.Animation animation;
+    private TextureRegion[] textureRegions;
 
     public Sprite(String texture, int tileWidth, int tileHeight, float frameDuration) {
         TextureRegion[][] temp = TextureRegion.split(new Texture(spriteFolder + "/" + texture + "." + spriteExtension),

@@ -17,7 +17,7 @@ public class PlayerView extends CharacterView {
     }
 
     @Override
-    public void update(String characterStatus, boolean selected, float delta) {
+    public void update(String characterStatus, boolean selected, boolean moving, float delta) {
         if (!selected && characterStatus.equals("idle"))
             currentFrame = spriteManager.getFrame("idle", 1);
         else if (selected && characterStatus.equals("idle"))

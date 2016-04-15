@@ -14,17 +14,17 @@ import com.kiriost.game.mechanic.IUpdatable;
  */
 public class StageManager extends Stage {
     private static StageManager instance;
-    private Terrain terrain;
     private Array<IUpdatable> updatables;
 
     private WorldManager worldManager;
 
     private StageManager() {
         super(new ScreenViewport());
+//        getBatch().disableBlending();
 
         updatables = new Array<IUpdatable>();
         worldManager = WorldManager.getInstance();
-//        getBatch().disableBlending();
+        updatables.add(worldManager);
     }
 
     public static StageManager getInstance() {
@@ -48,7 +48,7 @@ public class StageManager extends Stage {
     }
 
     private void loadMap() {
-        terrain = worldManager.createTerrain();
+        Terrain terrain = worldManager.createTerrain();
         addActor(terrain);
         updatables.add(new CameraManager(getCamera(), terrain.getWidth(), terrain.getHeight()));
     }

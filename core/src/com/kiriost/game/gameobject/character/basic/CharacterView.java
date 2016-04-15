@@ -3,10 +3,9 @@ package com.kiriost.game.gameobject.character.basic;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.kiriost.game.input.ModifierKey;
 import com.kiriost.game.manager.ConfigManager;
 import com.kiriost.game.manager.SpriteManager;
-
-import java.lang.*;
 
 /**
  * Created by kiriost on 06/04/16.
@@ -25,13 +24,13 @@ public abstract class CharacterView {
         viewDebug = new CharacterViewDebug();
     }
 
-    public abstract void update(String characterStatus, boolean selected, float delta);
+    public abstract void update(String characterStatus, boolean selected, boolean moving, float delta);
 
     public void draw(Character character, Batch batch, float parentAlpha) {
         Color color = character.getColor();
         character.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        update(character.getStatus(), character.isSelected(), character.getDelta());
+        update(character.getStatus(), character.isSelected(), character.isMoving(), character.getDelta());
 
         batch.setColor(character.getColor());
         batch.draw(currentFrame, character.getX(), character.getY(),
@@ -39,7 +38,7 @@ public abstract class CharacterView {
                 character.getWidth(), character.getHeight(), character.getScaleX(), character.getScaleY(),
                 character.getRotation());
 
-        if(debug) {
+        if (debug || ModifierKey.F12) {
             viewDebug.draw(character, batch);
         }
     }
