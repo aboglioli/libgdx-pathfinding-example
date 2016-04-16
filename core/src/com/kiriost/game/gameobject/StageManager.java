@@ -1,4 +1,4 @@
-package com.kiriost.game.manager;
+package com.kiriost.game.gameobject;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kiriost.game.gameobject.character.Player;
 import com.kiriost.game.gameobject.map.Terrain;
 import com.kiriost.game.mechanic.IUpdatable;
+import com.kiriost.game.screen.CameraManager;
 
 /**
  * Created by kiriost on 05/04/16.

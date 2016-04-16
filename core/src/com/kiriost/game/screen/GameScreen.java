@@ -5,8 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kiriost.game.AppGame;
+import com.kiriost.game.gameobject.StageManager;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.manager.StageManager;
 
 /**
  * Created by kiriost on 29/03/16.

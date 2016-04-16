@@ -1,7 +1,5 @@
 package com.kiriost.game.gameobject.character;
 
-import com.kiriost.game.gameobject.character.basic.Character;
-
 /**
  * Created by kiriost on 02/04/16.
  */

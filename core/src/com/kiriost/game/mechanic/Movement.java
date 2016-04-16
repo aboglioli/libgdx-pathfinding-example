@@ -1,4 +1,4 @@
-package com.kiriost.game.gameobject.character.basic;
+package com.kiriost.game.mechanic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;

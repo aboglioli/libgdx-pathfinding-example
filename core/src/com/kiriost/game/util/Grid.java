@@ -1,7 +1,5 @@
 package com.kiriost.game.util;
 
-import com.kiriost.game.manager.ConfigManager;
-
 /**
  * Created by kiriost on 09/04/16.
  */

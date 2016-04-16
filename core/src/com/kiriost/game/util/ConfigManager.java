@@ -1,4 +1,4 @@
-package com.kiriost.game.manager;
+package com.kiriost.game.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

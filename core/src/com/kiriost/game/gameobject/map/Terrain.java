@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
-import com.kiriost.game.manager.ConfigManager;
+import com.kiriost.game.util.ConfigManager;
 
 /**
  * Created by kiriost on 02/04/16.

@@ -1,4 +1,4 @@
-package com.kiriost.game.manager;
+package com.kiriost.game.screen;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.kiriost.game.input.ModifierKey;

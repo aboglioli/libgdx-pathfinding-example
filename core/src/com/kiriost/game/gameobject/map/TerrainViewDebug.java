@@ -2,7 +2,7 @@ package com.kiriost.game.gameobject.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.kiriost.game.manager.ConfigManager;
+import com.kiriost.game.util.ConfigManager;
 
 /**
  * Created by kiriost on 02/04/16.

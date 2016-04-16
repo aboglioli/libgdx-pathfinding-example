@@ -1,4 +1,4 @@
-package com.kiriost.game.gameobject.character.basic;
+package com.kiriost.game.gameobject.character;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -6,20 +6,23 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.manager.WorldManager;
+import com.kiriost.game.mechanic.CollisionManager;
+import com.kiriost.game.mechanic.Movement;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public abstract class Character extends Actor {
+public abstract class Character extends Actor implements ICollider {
     private CharacterView view;
 
-    private float delta;
-    private String status = new String();
+    private float delta = 0;
+    private float duration = 0;
 
+    private String status = new String();
     private Rectangle limits;
 
     private Array<Movement> movements;
+
     private float velocity = 240f;
     private boolean moving = false;
     private boolean selected = false;
@@ -70,6 +73,10 @@ public abstract class Character extends Actor {
         return delta;
     }
 
+    public float getDuration() {
+        return duration;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -79,10 +86,6 @@ public abstract class Character extends Actor {
             this.status = status;
             statusChanged();
         }
-    }
-
-    public boolean collide(Character character) {
-        return limits.overlaps(character.limits);
     }
 
     public Movement[] getMovements() {
@@ -121,7 +124,7 @@ public abstract class Character extends Actor {
 
             setPosition(x + incX, y + incY);
 
-            boolean collide = WorldManager.getInstance().collide(this);
+            boolean collide = CollisionManager.getInstance().collide(this);
 
             if (collide)
                 setPosition(x, y);
@@ -145,9 +148,11 @@ public abstract class Character extends Actor {
     }
 
     protected void statusChanged() {
+        duration = 0;
     }
 
     protected void selectChanged() {
+
     }
 
     protected void movementStarted() {
@@ -158,12 +163,18 @@ public abstract class Character extends Actor {
     }
 
     @Override
+    public boolean collide(ICollider character) {
+        return limits.overlaps(character.getLimits());
+    }
+
+    @Override
     public void act(float delta) {
         super.act(delta);
         updatePosition(delta);
         update(delta);
 
         this.delta = delta;
+        this.duration += delta;
     }
 
     @Override

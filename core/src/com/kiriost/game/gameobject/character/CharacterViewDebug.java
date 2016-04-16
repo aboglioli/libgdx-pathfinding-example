@@ -1,9 +1,10 @@
-package com.kiriost.game.gameobject.character.basic;
+package com.kiriost.game.gameobject.character;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.kiriost.game.mechanic.Movement;
 
 /**
  * Created by kiriost on 13/04/16.

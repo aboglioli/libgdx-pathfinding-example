@@ -3,20 +3,23 @@ package com.kiriost.game.graphic;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.kiriost.game.manager.ConfigManager;
 
 /**
  * Created by kiriost on 03/04/16.
  */
 public class Sprite {
-    private static final String spriteFolder = ConfigManager.getInstance().getProperty("spriteFolder");
-    private static final String spriteExtension = ConfigManager.getInstance().getProperty("spriteExtension");
-    protected com.badlogic.gdx.graphics.g2d.Animation animation;
+    private Animation animation;
     private TextureRegion[] textureRegions;
+    private boolean animated;
 
     public Sprite(String texture, int tileWidth, int tileHeight, float frameDuration) {
-        TextureRegion[][] temp = TextureRegion.split(new Texture(spriteFolder + "/" + texture + "." + spriteExtension),
-                tileWidth, tileHeight);
+        this(texture, tileHeight, tileHeight);
+        animation = new Animation(frameDuration, textureRegions);
+        animated = true;
+    }
+
+    public Sprite(String texture, int tileWidth, int tileHeight) {
+        TextureRegion[][] temp = TextureRegion.split(new Texture(texture), tileWidth, tileHeight);
 
         textureRegions = new TextureRegion[temp.length * temp[0].length];
         int index = 0;
@@ -26,7 +29,11 @@ public class Sprite {
             }
         }
 
-        animation = new Animation(frameDuration, textureRegions);
+        animated = false;
+    }
+
+    public boolean isAnimated() {
+        return animated;
     }
 
     public TextureRegion getCurrentFrame(float duration) {

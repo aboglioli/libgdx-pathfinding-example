@@ -1,30 +1,32 @@
 package com.kiriost.game.gameobject.character;
 
-import com.kiriost.game.gameobject.character.basic.CharacterView;
+import com.kiriost.game.graphic.Sprite;
+import com.kiriost.game.graphic.SpriteManager;
 
 /**
  * Created by kiriost on 08/04/16.
  */
 public class PlayerView extends CharacterView {
+    private Sprite idle, walk;
+
     public PlayerView(String name) {
         super(name);
-        try {
-            spriteManager.loadSprite("walk", 256, 256, 0.1f);
-            spriteManager.loadSprite("idle", 256, 256, 0.5f);
-        } catch (Exception exc) {
-            System.out.println(exc.getMessage());
-        }
+        SpriteManager spriteManager = SpriteManager.getInstance();
+
+        idle = spriteManager.get("civilian_idle", 256, 256, 0f);
+        walk = spriteManager.get("civilian_walk", 256, 256, 0.1f);
     }
 
     @Override
-    public void update(String characterStatus, boolean selected, boolean moving, float delta) {
-        if (!selected && characterStatus.equals("idle"))
-            currentFrame = spriteManager.getFrame("idle", 1);
-        else if (selected && characterStatus.equals("idle"))
-            currentFrame = spriteManager.getFrame("idle", 2);
-        else if (!selected && characterStatus.equals("walk"))
-            currentFrame = spriteManager.getCurrentFrame("walk", delta);
-        else if (selected && characterStatus.equals("walk"))
-            currentFrame = spriteManager.getCurrentFrame("walk", delta);
+    public void update(String characterStatus, boolean selected, boolean moving, float delta, float duration) {
+        if (moving) {
+            addDrawable(walk.getCurrentFrame(duration));
+        } else {
+            if (selected) {
+                addDrawable(idle.getFrame(2));
+            } else {
+                addDrawable(idle.getFrame(1));
+            }
+        }
     }
 }

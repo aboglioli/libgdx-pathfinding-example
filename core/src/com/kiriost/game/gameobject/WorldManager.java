@@ -1,13 +1,14 @@
-package com.kiriost.game.manager;
+package com.kiriost.game.gameobject;
 
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.gameobject.character.Npc;
 import com.kiriost.game.gameobject.character.Player;
-import com.kiriost.game.gameobject.character.basic.Character;
 import com.kiriost.game.gameobject.map.ITerrainObserver;
 import com.kiriost.game.gameobject.map.Terrain;
 import com.kiriost.game.input.ModifierKey;
 import com.kiriost.game.mechanic.IUpdatable;
+
+import java.util.Iterator;
 
 /**
  * Created by kiriost on 13/04/16.
@@ -18,6 +19,7 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
     private Terrain terrain;
 
     private Array<Player> players;
+
     private Array<Npc> npcs;
 
     private WorldManager() {
@@ -61,22 +63,12 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
         }
     }
 
-    public boolean collide(Character character) {
-        for (int i = 0; i < players.size; i++) {
-            Character player = players.get(i);
-            if (character == player)
-                continue;
-            if (character.collide(player)) {
-                return true;
-            }
-        }
-        for (int i = 0; i < npcs.size; i++) {
-            Character npc = npcs.get(i);
-            if (character.collide(npc)) {
-                return true;
-            }
-        }
-        return false;
+    public Iterator<Player> playerIterator() {
+        return players.iterator();
+    }
+
+    public Iterator<Npc> npcIterator() {
+        return npcs.iterator();
     }
 
     @Override

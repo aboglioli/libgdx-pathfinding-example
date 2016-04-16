@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.manager.ConfigManager;
+import com.kiriost.game.util.ConfigManager;
 
 /**
  * Created by kiriost on 13/04/16.
