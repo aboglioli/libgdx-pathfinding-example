@@ -1,7 +1,6 @@
 package com.kiriost.game.mechanic;
 
 import com.kiriost.game.gameobject.WorldManager;
-import com.kiriost.game.gameobject.character.ICollider;
 
 import java.util.Iterator;
 
@@ -22,8 +21,9 @@ public class CollisionManager {
     }
 
     public boolean collide(ICollider character) {
-        Iterator<? extends ICollider> gameObjects = WorldManager.getInstance().playerIterator();
         ICollider gameObject;
+
+        Iterator<? extends ICollider> gameObjects = WorldManager.getInstance().playerIterator();
         while (gameObjects.hasNext()) {
             gameObject = gameObjects.next();
             if (character == gameObject)
@@ -32,6 +32,7 @@ public class CollisionManager {
                 return true;
             }
         }
+
         gameObjects = WorldManager.getInstance().npcIterator();
         while (gameObjects.hasNext()) {
             gameObject = gameObjects.next();

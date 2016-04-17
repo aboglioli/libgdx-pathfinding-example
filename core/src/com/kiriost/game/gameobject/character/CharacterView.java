@@ -16,7 +16,7 @@ public abstract class CharacterView {
     private boolean debug = false;
     private CharacterViewDebug viewDebug;
 
-    public CharacterView(String characterName) {
+    public CharacterView() {
         debug = ConfigManager.getInstance().getBooleanProperty("debug");
         viewDebug = new CharacterViewDebug();
         drawables = new Array<TextureRegion>();
@@ -26,14 +26,13 @@ public abstract class CharacterView {
         drawables.add(textureRegion);
     }
 
-    public abstract void update(String characterStatus, boolean selected, boolean moving, float delta, float duration);
+    public abstract void update(Character character);
 
     public void draw(Character character, Batch batch, float parentAlpha) {
         Color color = character.getColor();
         character.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        update(character.getStatus(), character.isSelected(), character.isMoving(), character.getDelta(),
-                character.getDuration());
+        update(character);
 
         batch.setColor(character.getColor());
         for (int i = drawables.size - 1; i >= 0; i--) {

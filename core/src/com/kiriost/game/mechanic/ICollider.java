@@ -1,4 +1,4 @@
-package com.kiriost.game.gameobject.character;
+package com.kiriost.game.mechanic;
 
 import com.badlogic.gdx.math.Rectangle;
 

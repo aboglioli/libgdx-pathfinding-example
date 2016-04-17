@@ -9,8 +9,8 @@ import com.kiriost.game.graphic.SpriteManager;
 public class NpcView extends CharacterView {
     private Sprite walk;
 
-    public NpcView(String name) {
-        super(name);
+    public NpcView() {
+        super();
         SpriteManager spriteManager = SpriteManager.getInstance();
 
         walk = spriteManager.get("zombie_walk", 256, 256, 0.3f);
@@ -18,7 +18,7 @@ public class NpcView extends CharacterView {
     }
 
     @Override
-    public void update(String characterStatus, boolean selected, boolean moving, float delta, float duration) {
-        addDrawable(walk.getCurrentFrame(duration));
+    public void update(Character character) {
+        addDrawable(walk.getCurrentFrame(character.getDuration()));
     }
 }

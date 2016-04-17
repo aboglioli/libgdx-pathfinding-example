@@ -25,18 +25,22 @@ public class CharacterViewDebug {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
-        shapeRenderer.setColor(Color.LIGHT_GRAY);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(character.getX(), character.getY(), character.getWidth(), character.getHeight());
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
+        shapeRenderer.point(character.getX(), character.getY(), 0);
+        shapeRenderer.point(character.getX() + character.getWidth(), character.getY(), 0);
+        shapeRenderer.point(character.getX(), character.getY() + character.getHeight(), 0);
+        shapeRenderer.point(character.getX() + character.getWidth(), character.getY() + character.getHeight(), 0);
+//        shapeRenderer.rect(character.getX(), character.getY(), character.getWidth(), character.getHeight());
         shapeRenderer.end();
 
-        shapeRenderer.setColor(Color.GOLDENROD);
+        shapeRenderer.setColor(Color.GOLD);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.rect(character.getLimits().x, character.getLimits().y, character.getLimits().width,
                 character.getLimits().height);
         shapeRenderer.end();
 
-        if (character.isMoving()) {
+        if (character.getStatus("move")) {
             Movement[] movements = character.getMovements();
 
             shapeRenderer.setColor(Color.GREEN);

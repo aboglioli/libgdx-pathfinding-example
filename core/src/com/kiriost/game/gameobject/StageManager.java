@@ -21,7 +21,6 @@ public class StageManager extends Stage {
 
     private StageManager() {
         super(new ScreenViewport());
-//        getBatch().disableBlending();
 
         updatables = new Array<IUpdatable>();
         worldManager = WorldManager.getInstance();
@@ -69,7 +68,7 @@ public class StageManager extends Stage {
     private void loadNpcs() {
         for (int i = 0; i < 3; i++) {
             Actor zombie = worldManager.createNpc("zombie");
-            zombie.setPosition(MathUtils.random(500), MathUtils.random(500));
+            zombie.setPosition(100, 100*i);
             addActor(zombie);
         }
     }

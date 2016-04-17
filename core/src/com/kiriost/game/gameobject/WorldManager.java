@@ -41,13 +41,13 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
     }
 
     public Player createPlayer(String type) {
-        Player player = new Player("civilian");
+        Player player = new Player();
         players.add(player);
         return player;
     }
 
     public Npc createNpc(String type) {
-        Npc npc = new Npc("zombie");
+        Npc npc = new Npc();
         npcs.add(npc);
         return npc;
     }
@@ -57,7 +57,7 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
             for (int i = 0; i < players.size; i++) {
                 Player player = players.get(i);
                 if (player != selectedPlayer) {
-                    player.deselect();
+                    player.setStatus("select", false);
                 }
             }
         }
@@ -75,7 +75,7 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
     public void terrainClicked(float x, float y) {
         for (int i = 0; i < players.size; i++) {
             Player player = players.get(i);
-            if (player.isSelected())
+            if (player.getStatus("select"))
                 players.get(i).move(x, y);
         }
     }

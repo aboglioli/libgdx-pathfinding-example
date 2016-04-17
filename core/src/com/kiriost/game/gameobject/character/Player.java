@@ -9,23 +9,17 @@ import com.kiriost.game.gameobject.WorldManager;
  */
 public class Player extends Character {
 
-    public Player(String name) {
-        super(new PlayerView(name));
-        setStatus("idle");
+    public Player() {
+        super(new PlayerView());
+        setStatus("move", false);
 
         addCaptureListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                select();
+                setStatus("select", true);
                 return true;
             }
         });
-    }
-
-    @Override
-    protected void selectChanged() {
-        if (isSelected())
-            WorldManager.getInstance().setSelectedPlayer(this);
     }
 
     @Override
@@ -33,18 +27,22 @@ public class Player extends Character {
     }
 
     @Override
-    protected void statusChanged() {
+    protected void statusChanged(String name, boolean status, boolean changed) {
+        if (name.equals("select") && status) {
+            WorldManager.getInstance().setSelectedPlayer(this);
+        } else if (name.equals("move") && changed) {
+            resetDuration();
+        }
     }
 
     @Override
     protected void movementStarted() {
         super.movementStarted();
-        setStatus("walk");
+        setStatus("move", true);
     }
 
     @Override
     protected void movementFinished() {
-        super.movementFinished();
-        setStatus("idle");
+        setStatus("move", false);
     }
 }
