@@ -2,22 +2,26 @@ package com.kiriost.game.gameobject.character;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.input.ModifierKey;
 import com.kiriost.game.mechanic.CollisionManager;
-import com.kiriost.game.mechanic.ICollider;
 import com.kiriost.game.mechanic.Movement;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public abstract class Character extends Actor implements ICollider {
+public abstract class Character extends Actor {
     private CharacterView view;
     private Status status;
-    private Array<Movement> movements;
-    private Rectangle limits;
+    private Array<Movement> path;
+    private Rectangle limit;
+    private Vector2 vectorAlpha; // from origin to top-right corner
+
+    private boolean checkCollision = true;
+    private boolean collide = false;
 
     private float velocity = 240f;
 
@@ -27,19 +31,33 @@ public abstract class Character extends Actor implements ICollider {
         super();
         this.view = view;
         this.status = new Status();
-        this.movements = new Array<Movement>();
+        this.path = new Array<Movement>();
+        this.vectorAlpha = new Vector2();
 
         setWidth(64f);
         setHeight(64f);
         setBounds(0, 0, getWidth(), getHeight());
 
-        this.limits = new Rectangle(getX() + 8, getY() + 13, getWidth() - 16, getHeight() - 26);
+        this.limit = new Rectangle(getX() + 8, getY() + 13, getWidth() - 16, getHeight() - 26);
 
         setOrigin(Align.center);
     }
 
-    public Rectangle getLimits() {
-        return limits;
+    public float getCenterX() {
+        return getX() + getOriginX();
+    }
+
+    public float getCenterY() {
+        return getY() + getOriginY();
+    }
+
+    public float getAlpha() {
+        vectorAlpha.set(limit.x + limit.width, limit.y + limit.height).sub(getCenterX(), getCenterY());
+        return vectorAlpha.angle();
+    }
+
+    public Rectangle getLimit() {
+        return limit;
     }
 
     public float getDuration() {
@@ -60,39 +78,34 @@ public abstract class Character extends Actor implements ICollider {
         statusChanged(name, status, oldStatus != status);
     }
 
-    public void switchStatus(String name) {
-        this.status.switchStatus(name);
-        statusChanged(name, this.status.getStatus(name), true);
-    }
-
-    public Movement[] getMovements() {
-        return movements.toArray(Movement.class);
+    public Movement[] getPath() {
+        return path.toArray(Movement.class);
     }
 
     public void move(float x, float y) {
         Movement movement = new Movement();
         if (getStatus("move") && ModifierKey.L_SHIFT) {
-            Movement lastMovement = movements.get(movements.size - 1);
+            Movement lastMovement = path.get(path.size - 1);
 
             movement.setDestination(lastMovement.getDestination().x, lastMovement.getDestination().y,
                     x, y);
 
-            movements.add(movement);
+            path.add(movement);
         } else {
             if (getStatus("move")) {
-                movements.clear();
+                path.clear();
             }
 
-            movement.setDestination(getX() + getOriginX(), getY() + getOriginY(), x, y);
+            movement.setDestination(getCenterX(), getCenterY(), x, y);
 
             setStatus("move", true);
-            movements.add(movement);
+            path.add(movement);
             movementStarted();
         }
     }
 
     protected void updatePosition(float delta) {
-        Movement movement = movements.first();
+        Movement movement = path.first();
         float x = getX();
         float y = getY();
         float incX = movement.getDirection().x * velocity * delta;
@@ -101,25 +114,16 @@ public abstract class Character extends Actor implements ICollider {
         setPosition(x + incX, y + incY);
         movement.moved(incX, incY);
 
-        boolean collide = CollisionManager.getInstance().collide(this);
+        collide = CollisionManager.getInstance().collide(this, path);
 
         if (collide) { // Collision
             setPosition(x, y);
-
-            float dirAngle = movement.getDirection().angle();
-            System.out.println(dirAngle);
-            if (dirAngle < 90) {
-
-            }
-
-            movements.clear();
-            movementFinished();
-            setStatus("move", false);
         }
-        else if (!movement.nextMovement()) { // Movement
-            movements.removeIndex(0);
+
+        if (!movement.nextMovement()) { // Movement
+            path.removeIndex(0);
             movementFinished();
-            if (movements.size == 0) {
+            if (path.size == 0) {
                 setStatus("move", false);
             } else {
                 movementStarted();
@@ -131,7 +135,7 @@ public abstract class Character extends Actor implements ICollider {
     }
 
     protected void movementStarted() {
-        setRotation(movements.first().getDirection().angle() + 90);
+        setRotation(path.first().getDirection().angle() + 90);
     }
 
     protected void movementFinished() {
@@ -139,12 +143,7 @@ public abstract class Character extends Actor implements ICollider {
 
     @Override
     protected void positionChanged() {
-        limits.setPosition(getX() + 8, getY() + 13);
-    }
-
-    @Override
-    public boolean collide(ICollider character) {
-        return limits.overlaps(character.getLimits());
+        limit.setPosition(getX() + 8, getY() + 13);
     }
 
     @Override

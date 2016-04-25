@@ -34,14 +34,21 @@ public class CharacterViewDebug {
 //        shapeRenderer.rect(character.getX(), character.getY(), character.getWidth(), character.getHeight());
         shapeRenderer.end();
 
-        shapeRenderer.setColor(Color.GOLD);
+        shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(character.getLimits().x, character.getLimits().y, character.getLimits().width,
-                character.getLimits().height);
+        shapeRenderer.rect(character.getLimit().x, character.getLimit().y, character.getLimit().width,
+                character.getLimit().height);
+        shapeRenderer.end();
+
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.line(character.getCenterX(), character.getCenterY(),
+                character.getLimit().x + character.getLimit().width,
+                character.getLimit().y + character.getLimit().height);
         shapeRenderer.end();
 
         if (character.getStatus("move")) {
-            Movement[] movements = character.getMovements();
+            Movement[] movements = character.getPath();
 
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

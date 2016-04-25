@@ -22,8 +22,4 @@ public class Status {
     public void setStatus(String name, boolean status) {
         this.status.put(name, status);
     }
-
-    public void switchStatus(String name) {
-        this.status.put(name, !getStatus(name));
-    }
 }
