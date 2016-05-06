@@ -1,15 +1,14 @@
 package com.kiriost.game.graphic;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import com.kiriost.game.util.ConfigManager;
 
 /**
  * Created by kiriost on 16/04/16.
  */
 public class SpriteManager {
     private static SpriteManager instance;
-    private final String spriteFolder = ConfigManager.getInstance().getProperty("spriteFolder");
-    private final String imageExtension = ConfigManager.getInstance().getProperty("imageExtension");
+    private final String spriteFolder = "sprite";
+    private final String imageExtension = "png";
     private ObjectMap<String, Sprite> sprites;
 
     private SpriteManager() {

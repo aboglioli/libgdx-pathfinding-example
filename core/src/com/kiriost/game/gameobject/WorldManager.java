@@ -3,8 +3,8 @@ package com.kiriost.game.gameobject;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.gameobject.character.Npc;
 import com.kiriost.game.gameobject.character.Player;
-import com.kiriost.game.gameobject.map.ITerrainObserver;
-import com.kiriost.game.gameobject.map.Terrain;
+import com.kiriost.game.gameobject.map.IMapObserver;
+import com.kiriost.game.gameobject.map.Map;
 import com.kiriost.game.input.ModifierKey;
 import com.kiriost.game.mechanic.IUpdatable;
 
@@ -13,10 +13,10 @@ import java.util.Iterator;
 /**
  * Created by kiriost on 13/04/16.
  */
-public class WorldManager implements ITerrainObserver, IUpdatable {
+public class WorldManager implements IMapObserver, IUpdatable {
     private static WorldManager instance;
 
-    private Terrain terrain;
+    private Map map;
 
     private Array<Player> players;
 
@@ -34,10 +34,10 @@ public class WorldManager implements ITerrainObserver, IUpdatable {
         return instance;
     }
 
-    public Terrain createTerrain() {
-        terrain = new Terrain();
-        terrain.subscribe(this);
-        return terrain;
+    public Map createTerrain() {
+        map = new Map();
+        map.subscribe(this);
+        return map;
     }
 
     public Player createPlayer(String type) {

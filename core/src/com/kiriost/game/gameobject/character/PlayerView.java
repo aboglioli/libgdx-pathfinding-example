@@ -1,12 +1,14 @@
 package com.kiriost.game.gameobject.character;
 
+import com.kiriost.game.gameobject.GameObject;
+import com.kiriost.game.gameobject.GameObjectView;
 import com.kiriost.game.graphic.Sprite;
 import com.kiriost.game.graphic.SpriteManager;
 
 /**
  * Created by kiriost on 08/04/16.
  */
-public class PlayerView extends CharacterView {
+public class PlayerView extends GameObjectView {
     private Sprite idle, walk;
 
     public PlayerView() {
@@ -19,7 +21,7 @@ public class PlayerView extends CharacterView {
     }
 
     @Override
-    public void update(Character character) {
+    public void update(GameObject character) {
         if (character.getStatus("move")) {
             addDrawable(walk.getCurrentFrame(character.getDuration()));
         } else {

@@ -1,12 +1,11 @@
 package com.kiriost.game.gameobject;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kiriost.game.gameobject.character.Player;
-import com.kiriost.game.gameobject.map.Terrain;
+import com.kiriost.game.gameobject.map.Map;
 import com.kiriost.game.mechanic.IUpdatable;
 import com.kiriost.game.screen.CameraManager;
 
@@ -48,9 +47,9 @@ public class StageManager extends Stage {
     }
 
     private void loadMap() {
-        Terrain terrain = worldManager.createTerrain();
-        addActor(terrain);
-        updatables.add(new CameraManager(getCamera(), terrain.getWidth(), terrain.getHeight()));
+        Map map = worldManager.createTerrain();
+        addActor(map);
+        updatables.add(new CameraManager(getCamera(), map.getWidth(), map.getHeight()));
     }
 
     private void loadResources() {

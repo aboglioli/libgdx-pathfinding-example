@@ -1,24 +1,21 @@
-package com.kiriost.game.gameobject.character;
+package com.kiriost.game.gameobject;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.util.ConfigManager;
 
 /**
  * Created by kiriost on 06/04/16.
  */
-public abstract class CharacterView {
+public abstract class GameObjectView {
     private Array<TextureRegion> drawables;
 
-    private boolean debug = false;
-    private CharacterViewDebug viewDebug;
+    private GameObjectViewDebug viewDebug;
 
-    public CharacterView() {
-        debug = ConfigManager.getInstance().getBooleanProperty("debug");
-        viewDebug = new CharacterViewDebug();
+    public GameObjectView() {
+        viewDebug = new GameObjectViewDebug();
         drawables = new Array<TextureRegion>();
     }
 
@@ -26,9 +23,9 @@ public abstract class CharacterView {
         drawables.add(textureRegion);
     }
 
-    public abstract void update(Character character);
+    public abstract void update(GameObject character);
 
-    public void draw(Character character, Batch batch, float parentAlpha) {
+    public void draw(GameObject character, Batch batch, float parentAlpha) {
         Color color = character.getColor();
         character.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
@@ -44,7 +41,7 @@ public abstract class CharacterView {
                     character.getRotation());
         }
 
-        if (debug || ModifierKey.F12) {
+        if (ModifierKey.F12) {
             viewDebug.draw(character, batch);
         }
     }

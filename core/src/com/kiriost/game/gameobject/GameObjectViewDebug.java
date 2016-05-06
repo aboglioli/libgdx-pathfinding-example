@@ -1,25 +1,26 @@
-package com.kiriost.game.gameobject.character;
+package com.kiriost.game.gameobject;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.mechanic.Movement;
 
 /**
  * Created by kiriost on 13/04/16.
  */
-public class CharacterViewDebug {
+public class GameObjectViewDebug {
     private ShapeRenderer shapeRenderer;
     private Color color;
 
-    public CharacterViewDebug() {
+    public GameObjectViewDebug() {
         this.shapeRenderer = new ShapeRenderer();
         float rand = MathUtils.random();
         color = new Color(1, rand, rand, rand);
     }
 
-    public void draw(Character character, Batch batch) {
+    public void draw(GameObject character, Batch batch) {
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -47,36 +48,36 @@ public class CharacterViewDebug {
                 character.getLimit().y + character.getLimit().height);
         shapeRenderer.end();
 
-        if (character.getStatus("move")) {
-            Movement[] movements = character.getPath();
-
-            shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.line(character.getX() + character.getOriginX(), character.getY() + character.getOriginY(),
-                    movements[0].getDestination().x,
-                    movements[0].getDestination().y);
-            shapeRenderer.end();
-
-            shapeRenderer.setColor(1f, 0f, 0f, 1);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(movements[0].getDestination().x, movements[0].getDestination().y, 3);
-            shapeRenderer.end();
-
-            for (int i = 1; i < movements.length; i++) {
-                shapeRenderer.setColor(color);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.line(movements[i - 1].getDestination().x, movements[i - 1].getDestination().y,
-                        movements[i].getDestination().x,
-                        movements[i].getDestination().y);
-                shapeRenderer.end();
-
-                shapeRenderer.setColor(Color.RED);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.circle(movements[i].getDestination().x, movements[i].getDestination().y, 3);
-                shapeRenderer.end();
-            }
-
-        }
+//        if (character.getStatus("move")) {
+//            Movement[] movements = character.getPath();
+//
+//            shapeRenderer.setColor(Color.GREEN);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//            shapeRenderer.line(character.getX() + character.getOriginX(), character.getY() + character.getOriginY(),
+//                    movements[0].getDestination().x,
+//                    movements[0].getDestination().y);
+//            shapeRenderer.end();
+//
+//            shapeRenderer.setColor(1f, 0f, 0f, 1);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.circle(movements[0].getDestination().x, movements[0].getDestination().y, 3);
+//            shapeRenderer.end();
+//
+//            for (int i = 1; i < movements.length; i++) {
+//                shapeRenderer.setColor(color);
+//                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//                shapeRenderer.line(movements[i - 1].getDestination().x, movements[i - 1].getDestination().y,
+//                        movements[i].getDestination().x,
+//                        movements[i].getDestination().y);
+//                shapeRenderer.end();
+//
+//                shapeRenderer.setColor(Color.RED);
+//                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//                shapeRenderer.circle(movements[i].getDestination().x, movements[i].getDestination().y, 3);
+//                shapeRenderer.end();
+//            }
+//
+//        }
 
         batch.begin();
     }

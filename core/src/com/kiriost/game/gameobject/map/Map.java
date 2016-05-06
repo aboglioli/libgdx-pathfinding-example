@@ -5,25 +5,25 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
-import com.kiriost.game.util.ConfigManager;
+import com.kiriost.game.mechanic.Grid;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public class Terrain extends Actor {
+public class Map extends Actor {
     private final int terrainRows = 128;
     private final int terrainCols = 128;
-    private final int square = ConfigManager.getInstance().getIntProperty("square");
+    private final int square = Grid.square;
 
-    private final TerrainView terrainView;
-    private TerrainViewDebug terrainViewDebug;
+    private final MapView mapView;
+    private MapViewDebug mapViewDebug;
 
-    private Array<ITerrainObserver> terrainObservers;
+    private Array<IMapObserver> terrainObservers;
 
-    public Terrain() {
-        terrainView = new TerrainView();
+    public Map() {
+        mapView = new MapView();
 
-        terrainObservers = new Array<ITerrainObserver>();
+        terrainObservers = new Array<IMapObserver>();
 
         setX(0f);
         setY(0f);
@@ -48,15 +48,15 @@ public class Terrain extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        terrainView.draw(this, batch, parentAlpha);
+        mapView.draw(this, batch, parentAlpha);
     }
 
-    public void subscribe(ITerrainObserver observer) {
+    public void subscribe(IMapObserver observer) {
         if (!terrainObservers.contains(observer, true))
             terrainObservers.add(observer);
     }
 
-    public boolean unsubscribe(ITerrainObserver observer) {
+    public boolean unsubscribe(IMapObserver observer) {
         return terrainObservers.removeValue(observer, true);
     }
 }

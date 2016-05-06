@@ -2,21 +2,20 @@ package com.kiriost.game.gameobject.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.kiriost.game.util.ConfigManager;
+import com.kiriost.game.mechanic.Grid;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public class TerrainViewDebug {
+public class MapViewDebug {
     private ShapeRenderer shapeRenderer;
-    private int square;
+    private int square = Grid.square;
 
-    public TerrainViewDebug() {
+    public MapViewDebug() {
         shapeRenderer = new ShapeRenderer();
-        square = ConfigManager.getInstance().getIntProperty("square");
     }
 
-    public void draw(Terrain terrain, Batch batch) {
+    public void draw(Map map, Batch batch) {
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -24,13 +23,13 @@ public class TerrainViewDebug {
         shapeRenderer.setColor(0.4f, 0.2f, 0.2f, 0.5f);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        float width = terrain.getWidth();
-        float height = terrain.getHeight();
+        float width = map.getWidth();
+        float height = map.getHeight();
         for (int i = 0; i < width; i += square) {
-            shapeRenderer.line(i, terrain.getY(), i, height);
+            shapeRenderer.line(i, map.getY(), i, height);
         }
         for (int i = 0; i < height; i += square) {
-            shapeRenderer.line(terrain.getX(), i, width, i);
+            shapeRenderer.line(map.getX(), i, width, i);
         }
         shapeRenderer.end();
 

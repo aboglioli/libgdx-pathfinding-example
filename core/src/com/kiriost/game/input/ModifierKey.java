@@ -13,7 +13,7 @@ public class ModifierKey extends InputAdapter {
     public static boolean UP = false;
     public static boolean DOWN = false;
     public static boolean L_CONTROL = false;
-    public static boolean F12 = false;
+    public static boolean F12 = true;
 
     @Override
     public boolean keyDown(int keycode) {
