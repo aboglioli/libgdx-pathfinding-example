@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.kiriost.game.gameobject.GameObject;
-import com.kiriost.game.mechanic.Movement;
 
 /**
  * Created by kiriost on 13/04/16.
@@ -49,7 +47,7 @@ public class GameObjectViewDebug {
         shapeRenderer.end();
 
 //        if (character.getStatus("move")) {
-//            Movement[] movements = character.getPath();
+//            Step[] movements = character.getPath();
 //
 //            shapeRenderer.setColor(Color.GREEN);
 //            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

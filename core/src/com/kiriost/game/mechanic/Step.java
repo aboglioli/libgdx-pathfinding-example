@@ -6,13 +6,13 @@ import com.badlogic.gdx.utils.Pool;
 /**
  * Created by kiriost on 14/04/16.
  */
-public class Movement implements Pool.Poolable {
+public class Step implements Pool.Poolable {
     private Vector2 direction;
 
     private Vector2 destination;
     private float distance;
 
-    public Movement() {
+    public Step() {
         this.direction = new Vector2();
         this.destination = new Vector2();
         this.distance = 0;

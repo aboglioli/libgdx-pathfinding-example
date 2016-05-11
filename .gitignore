@@ -1,6 +1,7 @@
 ## Extras
 art/
 tools/
+examples/
 
 ## Java
 *.jar

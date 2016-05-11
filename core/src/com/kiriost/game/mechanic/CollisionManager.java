@@ -1,9 +1,7 @@
 package com.kiriost.game.mechanic;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.kiriost.game.gameobject.WorldManager;
 import com.kiriost.game.gameobject.GameObject;
+import com.kiriost.game.gameobject.WorldManager;
 
 import java.util.Iterator;
 

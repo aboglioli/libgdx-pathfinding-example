@@ -3,8 +3,7 @@ package com.kiriost.game.gameobject.character;
 import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.GameObjectView;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.mechanic.CollisionManager;
-import com.kiriost.game.mechanic.Movement;
+import com.kiriost.game.mechanic.Step;
 
 /**
  * Created by kiriost on 06/05/16.
@@ -18,7 +17,7 @@ public abstract class Character extends GameObject {
     }
 
     public void move(float x, float y) {
-        Movement movement = new Movement();
+        Step step = new Step();
         if (getStatus("move") && ModifierKey.L_SHIFT) {
 
         } else {
@@ -26,7 +25,7 @@ public abstract class Character extends GameObject {
 
             }
 
-            movement.setDestination(getCenterX(), getCenterY(), x, y);
+            step.setDestination(getCenterX(), getCenterY(), x, y);
 
             setStatus("move", true);
 

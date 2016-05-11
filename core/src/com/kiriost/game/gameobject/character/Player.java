@@ -2,7 +2,6 @@ package com.kiriost.game.gameobject.character;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.WorldManager;
 
 /**
