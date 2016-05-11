@@ -103,6 +103,7 @@ public class AStarPathFinder implements PathFinder {
             // pull out the first node in our open list, this is determined to
             // be the most likely to be the next step based on our heuristic
             Node current = getFirstInOpen();
+            System.out.println(current.x + " -- " + current.y);
             if (current == nodes[tx][ty]) {
                 break;
             }

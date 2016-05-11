@@ -6,17 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.kiriost.game.mechanic.Grid;
+import com.kiriost.game.mechanic.pathfinding.Mover;
 
 /**
  * Created by kiriost on 02/04/16.
  */
-public class Map extends Actor {
-    private final int terrainRows = 128;
-    private final int terrainCols = 128;
+public class Map extends Actor implements TileBasedMap {
+    private final int rows = 128;
+    private final int cols = 128;
     private final int square = Grid.square;
 
     private final MapView mapView;
-    private MapViewDebug mapViewDebug;
 
     private Array<IMapObserver> terrainObservers;
 
@@ -27,8 +27,8 @@ public class Map extends Actor {
 
         setX(0f);
         setY(0f);
-        setWidth(terrainRows * square);
-        setHeight(terrainCols * square);
+        setWidth(rows * square);
+        setHeight(cols * square);
 
         addListener(new InputListener() {
             @Override
@@ -58,5 +58,29 @@ public class Map extends Actor {
 
     public boolean unsubscribe(IMapObserver observer) {
         return terrainObservers.removeValue(observer, true);
+    }
+
+    @Override
+    public int getWidthInTiles() {
+        return rows;
+    }
+
+    @Override
+    public int getHeightInTiles() {
+        return cols;
+    }
+
+    @Override
+    public void pathFinderVisited(int x, int y) {
+    }
+
+    @Override
+    public boolean blocked(Mover mover, int x, int y) {
+        return false;
+    }
+
+    @Override
+    public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+        return 1;
     }
 }
