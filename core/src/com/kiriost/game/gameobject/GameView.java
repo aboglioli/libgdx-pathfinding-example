@@ -4,32 +4,46 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.kiriost.game.graphic.Sprite;
+import com.kiriost.game.graphic.SpriteManager;
 import com.kiriost.game.input.ModifierKey;
 
 /**
  * Created by kiriost on 06/04/16.
  */
-public abstract class GameObjectView {
+public abstract class GameView {
+    private SpriteManager spriteManager;
     private Array<TextureRegion> drawables;
 
-    private GameObjectViewDebug viewDebug;
+    private GameDebug viewDebug;
 
-    public GameObjectView() {
-        viewDebug = new GameObjectViewDebug();
+
+    public GameView() {
+        spriteManager = SpriteManager.getInstance();
         drawables = new Array<TextureRegion>();
+
+        viewDebug = new GameDebug();
+
+        create();
+    }
+
+    protected Sprite getSprite(String name, int width, int height, float duration) {
+        return spriteManager.get(name, width, height, duration);
     }
 
     protected void addDrawable(TextureRegion textureRegion) {
         drawables.add(textureRegion);
     }
 
-    public abstract void update(GameObject character);
+    public abstract void create();
 
-    public void draw(GameObject character, Batch batch, float parentAlpha) {
+    public abstract void update(Status status, float duration);
+
+    public void draw(GameObject character, Batch batch, float parentAlpha, Status status, float duration) {
         Color color = character.getColor();
         character.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        update(character);
+        update(status, duration);
 
         batch.setColor(character.getColor());
         for (int i = drawables.size - 1; i >= 0; i--) {

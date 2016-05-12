@@ -1,26 +1,26 @@
 package com.kiriost.game.gameobject.character;
 
-import com.kiriost.game.gameobject.GameObject;
-import com.kiriost.game.gameobject.GameObjectView;
+import com.kiriost.game.gameobject.GameView;
+import com.kiriost.game.gameobject.Status;
 import com.kiriost.game.graphic.Sprite;
-import com.kiriost.game.graphic.SpriteManager;
 
 /**
  * Created by kiriost on 08/04/16.
  */
-public class NpcView extends GameObjectView {
+public class NpcView extends GameView {
     private Sprite walk;
 
     public NpcView() {
         super();
-        SpriteManager spriteManager = SpriteManager.getInstance();
-
-        walk = spriteManager.get("zombie_walk", 256, 256, 0.3f);
-
     }
 
     @Override
-    public void update(GameObject character) {
-        addDrawable(walk.getCurrentFrame(character.getDuration()));
+    public void create() {
+        walk = getSprite("zombie_walk", 256, 256, 0.3f);
+    }
+
+    @Override
+    public void update(Status status, float duration) {
+        addDrawable(walk.getCurrentFrame(duration));
     }
 }

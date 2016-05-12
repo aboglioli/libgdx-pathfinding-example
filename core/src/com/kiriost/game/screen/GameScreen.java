@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kiriost.game.AppGame;
-import com.kiriost.game.gameobject.StageManager;
+import com.kiriost.game.gameobject.WorldManager;
 import com.kiriost.game.input.ModifierKey;
 
 /**
@@ -14,31 +14,29 @@ import com.kiriost.game.input.ModifierKey;
 public class GameScreen extends ScreenAdapter {
     private AppGame game;
 
-    private StageManager stageManager;
+    private WorldManager worldManager;
     private Viewport viewport;
 
     public GameScreen(AppGame game) {
         this.game = game;
 
         // Load game objects
-        stageManager = StageManager.getInstance();
-        stageManager.load();
-        viewport = stageManager.getViewport();
+        worldManager = new WorldManager();
+        viewport = worldManager.getViewport();
 
         // InputProcessors
-        InputMultiplexer inputMultiplexer = new InputMultiplexer(stageManager);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(worldManager);
         inputMultiplexer.addProcessor(new ModifierKey());
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void render(float delta) {
-        stageManager.update();
+        worldManager.update();
     }
 
     @Override
@@ -48,6 +46,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        stageManager.dispose();
+        worldManager.dispose();
     }
 }

@@ -56,10 +56,6 @@ public class Map extends Actor implements TileBasedMap {
             terrainObservers.add(observer);
     }
 
-    public boolean unsubscribe(IMapObserver observer) {
-        return terrainObservers.removeValue(observer, true);
-    }
-
     @Override
     public int getWidthInTiles() {
         return rows;

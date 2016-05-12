@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.MathUtils;
 /**
  * Created by kiriost on 13/04/16.
  */
-public class GameObjectViewDebug {
+public class GameDebug {
     private ShapeRenderer shapeRenderer;
     private Color color;
 
-    public GameObjectViewDebug() {
+    public GameDebug() {
         this.shapeRenderer = new ShapeRenderer();
         float rand = MathUtils.random();
         color = new Color(1, rand, rand, rand);
@@ -46,7 +46,7 @@ public class GameObjectViewDebug {
                 character.getLimit().y + character.getLimit().height);
         shapeRenderer.end();
 
-//        if (character.getStatus("move")) {
+//        if (character.get("move")) {
 //            Step[] movements = character.getPath();
 //
 //            shapeRenderer.setColor(Color.GREEN);

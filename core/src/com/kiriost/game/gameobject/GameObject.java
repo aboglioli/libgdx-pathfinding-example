@@ -4,21 +4,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
-import com.kiriost.game.gameobject.character.Status;
 import com.kiriost.game.mechanic.Grid;
 
 /**
  * Created by kiriost on 02/04/16.
  */
 public abstract class GameObject extends Actor {
-    private GameObjectView view;
+    private GameView view;
     private Status status;
 
     private Rectangle limit;
-
     private float duration = 0;
 
-    public GameObject(GameObjectView view) {
+    public GameObject(GameView view) {
         super();
         this.view = view;
         this.status = new Status();
@@ -44,22 +42,18 @@ public abstract class GameObject extends Actor {
         return limit;
     }
 
-    public float getDuration() {
-        return duration;
-    }
-
-    public void resetDuration() {
-        duration = 0;
-    }
-
     public boolean getStatus(String name) {
-        return status.getStatus(name);
+        return status.get(name);
     }
 
     public void setStatus(String name, boolean status) {
-        boolean oldStatus = this.status.getStatus(name);
-        this.status.setStatus(name, status);
+        boolean oldStatus = this.status.get(name);
+        this.status.set(name, status);
         statusChanged(name, status, oldStatus != status);
+    }
+
+    protected void resetDuration() {
+        duration = 0;
     }
 
     protected void statusChanged(String name, boolean status, boolean changed) {
@@ -85,13 +79,12 @@ public abstract class GameObject extends Actor {
     public void act(float delta) {
         super.act(delta);
         update(delta);
-
         this.duration += delta;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        view.draw(this, batch, parentAlpha);
+        view.draw(this, batch, parentAlpha, status, duration);
     }
 
     protected abstract void update(float delta);

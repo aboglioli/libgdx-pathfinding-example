@@ -1,4 +1,4 @@
-package com.kiriost.game.gameobject.character;
+package com.kiriost.game.gameobject;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -12,14 +12,14 @@ public class Status {
         status = new ObjectMap<String, Boolean>();
     }
 
-    public boolean getStatus(String name) {
+    public boolean get(String name) {
         if (!status.containsKey(name)) {
             return false;
         }
         return status.get(name).booleanValue();
     }
 
-    public void setStatus(String name, boolean status) {
+    public void set(String name, boolean status) {
         this.status.put(name, status);
     }
 }

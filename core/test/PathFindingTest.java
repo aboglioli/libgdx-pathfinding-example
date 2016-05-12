@@ -1,5 +1,3 @@
-
-
 import com.kiriost.game.gameobject.map.TileBasedMap;
 import com.kiriost.game.mechanic.pathfinding.AStarPathFinder;
 import com.kiriost.game.mechanic.pathfinding.Mover;
