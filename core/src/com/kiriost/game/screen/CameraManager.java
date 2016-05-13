@@ -2,12 +2,11 @@ package com.kiriost.game.screen;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.kiriost.game.input.ModifierKey;
-import com.kiriost.game.mechanic.IUpdatable;
 
 /**
  * Created by kiriost on 14/04/16.
  */
-public class CameraManager implements IUpdatable {
+public class CameraManager {
     float limitX, limitY;
     private Camera camera;
     private int cameraTranslateModifier = 1;
@@ -18,7 +17,6 @@ public class CameraManager implements IUpdatable {
         this.limitY = limitY;
     }
 
-    @Override
     public void update(float delta) {
         // Camera movements
         if (ModifierKey.L_SHIFT)

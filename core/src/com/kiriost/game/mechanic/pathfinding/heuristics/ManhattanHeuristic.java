@@ -1,8 +1,8 @@
 package com.kiriost.game.mechanic.pathfinding.heuristics;
 
+import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.map.TileBasedMap;
 import com.kiriost.game.mechanic.pathfinding.AStarHeuristic;
-import com.kiriost.game.mechanic.pathfinding.Mover;
 
 /**
  * A heuristic that drives the search based on the Manhattan distance
@@ -26,9 +26,9 @@ public class ManhattanHeuristic implements AStarHeuristic {
     }
 
     /**
-     * @see AStarHeuristic#getCost(TileBasedMap, Mover, int, int, int, int)
+     * @see AStarHeuristic#getCost(TileBasedMap, GameObject, int, int, int, int)
      */
-    public float getCost(TileBasedMap map, Mover mover, int x, int y, int tx,
+    public float getCost(TileBasedMap map, GameObject mover, int x, int y, int tx,
                          int ty) {
         return minimumCost * (Math.abs(x - tx) + Math.abs(y - ty));
     }

@@ -1,6 +1,8 @@
 package com.kiriost.game.mechanic.pathfinding;
 
+import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.map.TileBasedMap;
+import com.kiriost.game.mechanic.Grid;
 import com.kiriost.game.mechanic.pathfinding.heuristics.ClosestHeuristic;
 
 import java.util.ArrayList;
@@ -44,6 +46,10 @@ public class AStarPathFinder implements PathFinder {
      */
     private AStarHeuristic heuristic;
 
+    public AStarPathFinder(TileBasedMap map) {
+        this(map, map.getWidthInTiles() * map.getHeightInTiles(), true, new ClosestHeuristic());
+    }
+
     /**
      * Create a path finder with the default heuristic - closest to target.
      *
@@ -79,9 +85,9 @@ public class AStarPathFinder implements PathFinder {
     }
 
     /**
-     * @see PathFinder#findPath(Mover, int, int, int, int)
+     * @see PathFinder#findPath(GameObject, int, int, int, int)
      */
-    public Path findPath(Mover mover, int sx, int sy, int tx, int ty) {
+    public Path findPath(GameObject mover, int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
         if (map.blocked(mover, tx, ty)) {
             return null;
@@ -103,7 +109,6 @@ public class AStarPathFinder implements PathFinder {
             // pull out the first node in our open list, this is determined to
             // be the most likely to be the next step based on our heuristic
             Node current = getFirstInOpen();
-            System.out.println(current.x + " -- " + current.y);
             if (current == nodes[tx][ty]) {
                 break;
             }
@@ -264,7 +269,7 @@ public class AStarPathFinder implements PathFinder {
      * @param y     The y coordinate of the location to check
      * @return True if the location is valid for the given mover
      */
-    protected boolean isValidLocation(Mover mover, int sx, int sy, int x, int y) {
+    protected boolean isValidLocation(GameObject mover, int sx, int sy, int x, int y) {
         boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
@@ -284,7 +289,7 @@ public class AStarPathFinder implements PathFinder {
      * @param ty    The y coordinate of the target location
      * @return The cost of movement through the given tile
      */
-    public float getMovementCost(Mover mover, int sx, int sy, int tx, int ty) {
+    public float getMovementCost(GameObject mover, int sx, int sy, int tx, int ty) {
         return map.getCost(mover, sx, sy, tx, ty);
     }
 
@@ -299,7 +304,7 @@ public class AStarPathFinder implements PathFinder {
      * @param ty    The y coordinate of the target location
      * @return The heuristic cost assigned to the tile
      */
-    public float getHeuristicCost(Mover mover, int x, int y, int tx, int ty) {
+    public float getHeuristicCost(GameObject mover, int x, int y, int tx, int ty) {
         return heuristic.getCost(map, mover, x, y, tx, ty);
     }
 

@@ -7,11 +7,11 @@ import com.kiriost.game.mechanic.Grid;
 /**
  * Created by kiriost on 02/04/16.
  */
-public class MapViewDebug {
+public class MapDebug {
     private ShapeRenderer shapeRenderer;
     private int square = Grid.square;
 
-    public MapViewDebug() {
+    public MapDebug() {
         shapeRenderer = new ShapeRenderer();
     }
 

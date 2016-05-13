@@ -1,6 +1,6 @@
+import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.map.TileBasedMap;
 import com.kiriost.game.mechanic.pathfinding.AStarPathFinder;
-import com.kiriost.game.mechanic.pathfinding.Mover;
 import com.kiriost.game.mechanic.pathfinding.Path;
 import com.kiriost.game.mechanic.pathfinding.PathFinder;
 import org.junit.Before;
@@ -15,6 +15,7 @@ class Map implements TileBasedMap {
 
     public Map() {
         map = new boolean[length][length];
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
                 map[i][j] = false;
@@ -43,12 +44,12 @@ class Map implements TileBasedMap {
     }
 
     @Override
-    public boolean blocked(Mover mover, int x, int y) {
+    public boolean blocked(GameObject mover, int x, int y) {
         return map[x][y];
     }
 
     @Override
-    public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+    public float getCost(GameObject mover, int sx, int sy, int tx, int ty) {
         return 1;
     }
 }
@@ -64,7 +65,6 @@ public class PathFindingTest {
         pathFinder = new AStarPathFinder(map, 10, false);
         path = pathFinder.findPath(null, 0, 2, 4, 2);
     }
-
 
     @Test
     public void pathNotNull() {

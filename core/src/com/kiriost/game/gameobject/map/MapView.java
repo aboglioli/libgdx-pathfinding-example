@@ -12,7 +12,7 @@ import com.kiriost.game.input.ModifierKey;
  * Created by kiriost on 13/04/16.
  */
 public class MapView {
-    private MapViewDebug mapViewDebug;
+    private MapDebug mapDebug;
 
     private int square;
 
@@ -20,7 +20,7 @@ public class MapView {
     private TextureRegion tiles[][];
 
     public MapView() {
-        mapViewDebug = new MapViewDebug();
+        mapDebug = new MapDebug();
 
         texture = new Texture("map/terrain_tiles.png");
         tiles = TextureRegion.split(texture, 144, 144);
@@ -45,6 +45,6 @@ public class MapView {
         }
 
         if (ModifierKey.F12)
-            mapViewDebug.draw(map, batch);
+            mapDebug.draw(map, batch);
     }
 }

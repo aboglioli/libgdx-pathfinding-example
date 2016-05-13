@@ -18,17 +18,15 @@ public class PlayerView extends GameView {
     public void create() {
         idle = getSprite("civilian_idle", 256, 256, 0f);
         walk = getSprite("civilian_walk", 256, 256, 0.1f);
-//        selected_circle = spriteManager.get("selected_circle",
     }
 
     @Override
     public void update(Status status, float duration) {
-        if (status.get("move")) {
+        if (status.get("moving")) {
             addDrawable(walk.getCurrentFrame(duration));
         } else {
-            if (status.get("select")) {
+            if (status.get("selected")) {
                 addDrawable(idle.getFrame(2));
-//                addDrawable(selected_circle.getCurrentFrame(character.duration()));
             } else {
                 addDrawable(idle.getFrame(1));
             }

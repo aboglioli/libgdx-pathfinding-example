@@ -46,37 +46,6 @@ public class GameDebug {
                 character.getLimit().y + character.getLimit().height);
         shapeRenderer.end();
 
-//        if (character.get("move")) {
-//            Step[] movements = character.getPath();
-//
-//            shapeRenderer.setColor(Color.GREEN);
-//            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//            shapeRenderer.line(character.getX() + character.getOriginX(), character.getY() + character.getOriginY(),
-//                    movements[0].getDestination().x,
-//                    movements[0].getDestination().y);
-//            shapeRenderer.end();
-//
-//            shapeRenderer.setColor(1f, 0f, 0f, 1);
-//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            shapeRenderer.circle(movements[0].getDestination().x, movements[0].getDestination().y, 3);
-//            shapeRenderer.end();
-//
-//            for (int i = 1; i < movements.length; i++) {
-//                shapeRenderer.setColor(color);
-//                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//                shapeRenderer.line(movements[i - 1].getDestination().x, movements[i - 1].getDestination().y,
-//                        movements[i].getDestination().x,
-//                        movements[i].getDestination().y);
-//                shapeRenderer.end();
-//
-//                shapeRenderer.setColor(Color.RED);
-//                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//                shapeRenderer.circle(movements[i].getDestination().x, movements[i].getDestination().y, 3);
-//                shapeRenderer.end();
-//            }
-//
-//        }
-
         batch.begin();
     }
 }

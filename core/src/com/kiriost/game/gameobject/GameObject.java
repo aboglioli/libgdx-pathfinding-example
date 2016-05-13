@@ -21,13 +21,14 @@ public abstract class GameObject extends Actor {
         this.view = view;
         this.status = new Status();
 
-        setWidth(32f);
-        setHeight(32f);
+        setWidth(Grid.square * 2);
+        setHeight(Grid.square * 2);
         setBounds(0, 0, getWidth(), getHeight());
 
         setOrigin(Align.center);
 
-        this.limit = new Rectangle(getX() + 8, getY() + 8, getWidth() - 16, getHeight() - 16);
+        this.limit = new Rectangle(getX() + Grid.square / 2, getY() + Grid.square / 2,
+                getWidth() - Grid.square, getHeight() - Grid.square);
     }
 
     public float getCenterX() {
@@ -66,8 +67,19 @@ public abstract class GameObject extends Actor {
     }
 
     @Override
+    public void setX(float x) {
+        super.setX(Grid.normalize(x) - limit.width / 2);
+    }
+
+    @Override
+    public void setY(float y) {
+        super.setY(Grid.normalize(y) - limit.height / 2);
+    }
+
+    @Override
     public void setPosition(float x, float y) {
-        super.setPosition(Grid.normalize(x), Grid.normalize(y));
+//        super.setPosition(x, y);
+        super.setPosition(Grid.normalize(x) - limit.width / 2, Grid.normalize(y) - limit.height / 2);
     }
 
     @Override

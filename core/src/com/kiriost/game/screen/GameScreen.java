@@ -36,7 +36,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        worldManager.update();
+        worldManager.update(delta);
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
+import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.mechanic.Grid;
-import com.kiriost.game.mechanic.pathfinding.Mover;
 
 /**
  * Created by kiriost on 02/04/16.
@@ -33,14 +33,15 @@ public class Map extends Actor implements TileBasedMap {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                for (int i = 0; i < terrainObservers.size; i++) {
-                    terrainObservers.get(i).terrainClicked(x, y);
+                for (IMapObserver observer : terrainObservers) {
+                    observer.terrainClicked((int)x, (int)y);
                 }
                 return true;
             }
         });
     }
 
+    // Actor
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -56,6 +57,7 @@ public class Map extends Actor implements TileBasedMap {
             terrainObservers.add(observer);
     }
 
+    // TileBaseMap
     @Override
     public int getWidthInTiles() {
         return rows;
@@ -71,12 +73,12 @@ public class Map extends Actor implements TileBasedMap {
     }
 
     @Override
-    public boolean blocked(Mover mover, int x, int y) {
+    public boolean blocked(GameObject mover, int x, int y) {
         return false;
     }
 
     @Override
-    public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+    public float getCost(GameObject mover, int sx, int sy, int tx, int ty) {
         return 1;
     }
 }

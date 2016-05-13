@@ -39,24 +39,24 @@ public abstract class GameView {
 
     public abstract void update(Status status, float duration);
 
-    public void draw(GameObject character, Batch batch, float parentAlpha, Status status, float duration) {
-        Color color = character.getColor();
-        character.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+    public void draw(GameObject gameObject, Batch batch, float parentAlpha, Status status, float duration) {
+        Color color = gameObject.getColor();
+        gameObject.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         update(status, duration);
 
-        batch.setColor(character.getColor());
+        batch.setColor(gameObject.getColor());
         for (int i = drawables.size - 1; i >= 0; i--) {
             batch.draw(drawables.pop(),
-                    character.getX(), character.getY(),
-                    character.getOriginX(), character.getOriginY(),
-                    character.getWidth(), character.getHeight(),
-                    character.getScaleX(), character.getScaleY(),
-                    character.getRotation());
+                    gameObject.getX(), gameObject.getY(),
+                    gameObject.getOriginX(), gameObject.getOriginY(),
+                    gameObject.getWidth(), gameObject.getHeight(),
+                    gameObject.getScaleX(), gameObject.getScaleY(),
+                    gameObject.getRotation());
         }
 
         if (ModifierKey.F12) {
-            viewDebug.draw(character, batch);
+            viewDebug.draw(gameObject, batch);
         }
     }
 }

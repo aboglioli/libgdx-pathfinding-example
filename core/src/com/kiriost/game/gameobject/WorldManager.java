@@ -10,6 +10,8 @@ import com.kiriost.game.gameobject.character.PlayerView;
 import com.kiriost.game.gameobject.map.IMapObserver;
 import com.kiriost.game.gameobject.map.Map;
 import com.kiriost.game.input.ModifierKey;
+import com.kiriost.game.mechanic.pathfinding.AStarPathFinder;
+import com.kiriost.game.mechanic.pathfinding.PathFinder;
 import com.kiriost.game.screen.CameraManager;
 
 /**
@@ -17,14 +19,17 @@ import com.kiriost.game.screen.CameraManager;
  */
 public class WorldManager extends Stage implements IMapObserver {
     private Array<GameObject> gameObjects;
+    private SelectedObjectContainer selectedObjects;
 
     private CameraManager cameraManager;
     private Map map;
+    private PathFinder pathFinder;
 
     public WorldManager() {
         super(new ScreenViewport());
 
         gameObjects = new Array<GameObject>();
+        selectedObjects = new SelectedObjectContainer();
 
         createWorld();
     }
@@ -32,6 +37,7 @@ public class WorldManager extends Stage implements IMapObserver {
     private void createWorld() {
         // Map
         map = new Map();
+        pathFinder = new AStarPathFinder(map);
         map.subscribe(this);
 
         addActor(map);
@@ -39,7 +45,7 @@ public class WorldManager extends Stage implements IMapObserver {
         // Character
         NpcView npcView = new NpcView();
         for (int i = 0; i < 3; i++) {
-            GameObject zombie = new Npc(npcView);
+            Npc zombie = new Npc(npcView);
             zombie.setPosition(100, 100 * i);
             gameObjects.add(zombie);
 
@@ -48,8 +54,9 @@ public class WorldManager extends Stage implements IMapObserver {
 
         PlayerView playerView = new PlayerView();
         for (int i = 0; i < 4; i++) {
-            GameObject player = new Player(playerView);
+            Player player = new Player(playerView);
             player.setPosition(i * 200, i * 200);
+            player.setSelectedObjectContainer(selectedObjects);
             gameObjects.add(player);
 
             addActor(player);
@@ -59,35 +66,14 @@ public class WorldManager extends Stage implements IMapObserver {
         cameraManager = new CameraManager(getCamera(), map.getWidth(), map.getHeight());
     }
 
-    public void setSelectedPlayer(Player selectedPlayer) {
-        if (!ModifierKey.L_SHIFT) {
-            for (int i = 0; i < gameObjects.size; i++) {
-                GameObject player = gameObjects.get(i);
-                if (player != selectedPlayer) {
-                    player.setStatus("select", false);
-                }
-            }
-        }
-    }
-
-    public void update() {
-        act();
+    public void update(float delta) {
+        act(delta);
+        cameraManager.update(delta);
         draw();
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
-        cameraManager.update(delta);
-    }
-
-    @Override
-    public void terrainClicked(float x, float y) {
-        for (int i = 0; i < gameObjects.size; i++) {
-            GameObject player = gameObjects.get(i);
-            if (player.getStatus("select")) {
-//                gameObjects.get(i).move(x, y);
-            }
-        }
+    public void terrainClicked(int x, int y) {
+        selectedObjects.move(pathFinder, x, y);
     }
 }
