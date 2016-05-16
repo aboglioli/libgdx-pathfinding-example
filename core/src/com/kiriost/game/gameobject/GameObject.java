@@ -16,19 +16,19 @@ public abstract class GameObject extends Actor {
     private Rectangle limit;
     private float duration = 0;
 
+
     public GameObject(GameView view) {
         super();
         this.view = view;
         this.status = new Status();
 
-        setWidth(Grid.square * 2);
-        setHeight(Grid.square * 2);
+        setWidth(Grid.square * 4);
+        setHeight(Grid.square * 4);
         setBounds(0, 0, getWidth(), getHeight());
 
         setOrigin(Align.center);
 
-        this.limit = new Rectangle(getX() + Grid.square / 2, getY() + Grid.square / 2,
-                getWidth() - Grid.square, getHeight() - Grid.square);
+        this.limit = new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     public float getCenterX() {
@@ -50,11 +50,20 @@ public abstract class GameObject extends Actor {
     public void setStatus(String name, boolean status) {
         boolean oldStatus = this.status.get(name);
         this.status.set(name, status);
-        statusChanged(name, status, oldStatus != status);
+        statusChanged(name, status, oldStatus);
+    }
+
+    public float duration() {
+        return duration;
     }
 
     protected void resetDuration() {
         duration = 0;
+    }
+
+    public void addPosition(float x, float y) {
+        setX(getX() + x);
+        setY(getY() + y);
     }
 
     protected void statusChanged(String name, boolean status, boolean changed) {
@@ -66,26 +75,27 @@ public abstract class GameObject extends Actor {
     protected void movementFinished() {
     }
 
-    @Override
-    public void setX(float x) {
-        super.setX(Grid.normalize(x) - limit.width / 2);
-    }
-
-    @Override
-    public void setY(float y) {
-        super.setY(Grid.normalize(y) - limit.height / 2);
-    }
-
-    @Override
-    public void setPosition(float x, float y) {
-//        super.setPosition(x, y);
-        super.setPosition(Grid.normalize(x) - limit.width / 2, Grid.normalize(y) - limit.height / 2);
-    }
-
-    @Override
-    protected void positionChanged() {
-        limit.setPosition(getX() + 8, getY() + 8);
-    }
+    // Actor
+//    @Override
+//    public void setX(float x) {
+//        super.setX(Grid.normalize(x));
+//    }
+//
+//    @Override
+//    public void setY(float y) {
+//        super.setY(Grid.normalize(y));
+//    }
+//
+//    @Override
+//    public void setPosition(float x, float y) {
+//        setX(x);
+//        setY(y);
+//    }
+//
+//    @Override
+//    protected void positionChanged() {
+//        limit.setPosition(getX() + 8, getY() + 8);
+//    }
 
     @Override
     public void act(float delta) {

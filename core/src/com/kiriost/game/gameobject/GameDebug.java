@@ -39,13 +39,6 @@ public class GameDebug {
                 character.getLimit().height);
         shapeRenderer.end();
 
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(character.getCenterX(), character.getCenterY(),
-                character.getLimit().x + character.getLimit().width,
-                character.getLimit().y + character.getLimit().height);
-        shapeRenderer.end();
-
         batch.begin();
     }
 }

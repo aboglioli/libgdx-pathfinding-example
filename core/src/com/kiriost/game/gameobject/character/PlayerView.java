@@ -26,9 +26,9 @@ public class PlayerView extends GameView {
             addDrawable(walk.getCurrentFrame(duration));
         } else {
             if (status.get("selected")) {
-                addDrawable(idle.getFrame(2));
+                addDrawable(idle.getFrame(0));
             } else {
-                addDrawable(idle.getFrame(1));
+                addDrawable(walk.getFrame(0));
             }
         }
     }

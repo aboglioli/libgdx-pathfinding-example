@@ -1,12 +1,12 @@
 package com.kiriost.game.gameobject.character;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.kiriost.game.gameobject.ActuatorContainer;
 import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.GameView;
-import com.kiriost.game.gameobject.ISelectable;
-import com.kiriost.game.gameobject.SelectedObjectContainer;
-import com.kiriost.game.input.ModifierKey;
+import com.kiriost.game.gameobject.IActuator;
 import com.kiriost.game.mechanic.Grid;
 import com.kiriost.game.mechanic.pathfinding.Path;
 import com.kiriost.game.mechanic.pathfinding.PathFinder;
@@ -14,10 +14,13 @@ import com.kiriost.game.mechanic.pathfinding.PathFinder;
 /**
  * Created by kiriost on 08/04/16.
  */
-public class Player extends GameObject implements ISelectable {
-    private SelectedObjectContainer selectedObjectContainer;
-    private Path path = null;
+public class Player extends GameObject implements IActuator {
+    private Path path;
     private int pathCounter = 0;
+
+    private ActuatorContainer actuatorContainer;
+    private float velocity = 30f;
+    private float duration = 0f;
 
     public Player(GameView view) {
         super(view);
@@ -27,7 +30,7 @@ public class Player extends GameObject implements ISelectable {
         addCaptureListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                setStatus("selected", true);
+                select();
                 return true;
             }
         });
@@ -35,12 +38,23 @@ public class Player extends GameObject implements ISelectable {
 
     public void updatePosition(float delta) {
         if (path != null) {
-            Path.Step step = path.getStep(pathCounter++);
-            setPosition(Grid.pixels(step.getX()), Grid.pixels(step.getY()));
-            if (path.getLength() == pathCounter) {
-                path = null;
-                pathCounter = 0;
-                movementFinished();
+            duration += delta;
+            if(duration >= 1/30f) {
+                duration = 0f;
+                Path.Step step = path.getStep(pathCounter++);
+                float x = Grid.pixels(step.getX());
+                float y = Grid.pixels(step.getY());
+                Vector2 direction = new Vector2(x - getX(), y - getY());
+
+                setPosition(x, y);
+                setRotation(direction.angle() + 90);
+
+
+                if(path.getLength() == pathCounter) {
+                    path = null;
+                    pathCounter = 0;
+                    movementFinished();
+                }
             }
         }
     }
@@ -52,10 +66,8 @@ public class Player extends GameObject implements ISelectable {
     }
 
     @Override
-    protected void statusChanged(String name, boolean status, boolean changed) {
-        if (name.equals("selected") && status) {
-            selectedObjectContainer.set(this);
-        } else if (name.equals("moving") && changed) {
+    protected void statusChanged(String name, boolean status, boolean oldStatus) {
+        if (name.equals("moving") && status != oldStatus) {
             resetDuration();
         }
     }
@@ -70,41 +82,44 @@ public class Player extends GameObject implements ISelectable {
         setStatus("moving", false);
     }
 
-
-    // ISelectable
+    // IActuator
     @Override
-    public void setSelectedObjectContainer(SelectedObjectContainer selectedObjectContainer) {
-        this.selectedObjectContainer = selectedObjectContainer;
+    public void setActuatorContainer(ActuatorContainer actuatorContainer) {
+        this.actuatorContainer = actuatorContainer;
+        this.actuatorContainer.subscribe(this);
     }
 
     @Override
-    public void deselected() {
+    public boolean isSelectable() {
+        return true;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return getStatus("selected");
+    }
+
+    @Override
+    public void select() {
+        setStatus("selected", true);
+        actuatorContainer.notify("selected", this);
+    }
+
+    @Override
+    public void deselect() {
         setStatus("selected", false);
+    }
+
+    @Override
+    public boolean isMovable() {
+        return true;
     }
 
     @Override
     public void move(PathFinder pathFinder, int x, int y) {
         path = pathFinder.findPath(this, Grid.units(getX()), Grid.units(getY()), Grid.units(x), Grid.units(y));
         pathCounter = 0;
-
-//        if (path != null) {
-//            for (int i = 0; i < path.getLength(); i++) {
-//                Path.Step step = path.getStep(i);
-//                System.out.println(step.getX() + " -- " + step.getY());
-//                System.out.println("( " + Grid.pixels(step.getX()) + " -- " + Grid.pixels(step.getY()) + " )");
-//            }
-//        }
-
-        if (getStatus("moving") && ModifierKey.L_SHIFT) {
-
-        } else {
-            if (getStatus("moving")) {
-
-            }
-
-            setStatus("moving", true);
-
-            movementStarted();
-        }
+        movementStarted();
     }
+
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.kiriost.game.input.ModifierKey;
 
 /**
@@ -37,7 +38,7 @@ public class MapView {
 
         for (int i = 0; i < map.getWidth(); i += square) {
             for (int j = 0; j < map.getHeight(); j += square) {
-                batch.draw(tiles[0][1],
+                batch.draw(tiles[2][2],
                         map.getX() + i, map.getY() + j, map.getOriginX(),
                         map.getOriginY(), square, square,
                         map.getScaleX(), map.getScaleY(), map.getRotation());

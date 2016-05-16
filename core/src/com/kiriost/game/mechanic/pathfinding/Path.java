@@ -96,6 +96,9 @@ public class Path {
         return steps.contains(new Step(x, y));
     }
 
+    public void remove(int index) {
+        steps.remove(index);
+    }
     /**
      * A single step within the path
      *

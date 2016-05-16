@@ -46,10 +46,6 @@ public class AStarPathFinder implements PathFinder {
      */
     private AStarHeuristic heuristic;
 
-    public AStarPathFinder(TileBasedMap map) {
-        this(map, map.getWidthInTiles() * map.getHeightInTiles(), true, new ClosestHeuristic());
-    }
-
     /**
      * Create a path finder with the default heuristic - closest to target.
      *

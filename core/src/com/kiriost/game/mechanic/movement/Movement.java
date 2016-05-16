@@ -1,4 +1,4 @@
-package com.kiriost.game.mechanic;
+package com.kiriost.game.mechanic.movement;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
@@ -6,13 +6,13 @@ import com.badlogic.gdx.utils.Pool;
 /**
  * Created by kiriost on 14/04/16.
  */
-public class Step implements Pool.Poolable {
+public class Movement implements Pool.Poolable {
     private Vector2 direction;
 
     private Vector2 destination;
     private float distance;
 
-    public Step() {
+    public Movement() {
         this.direction = new Vector2();
         this.destination = new Vector2();
         this.distance = 0;
@@ -45,5 +45,11 @@ public class Step implements Pool.Poolable {
     public void reset() {
         direction.set(0, 0);
         destination.set(0, 0);
+    }
+
+    @Override
+    public String toString() {
+        String msg = direction.x + " -- " + direction.y;
+        return msg;
     }
 }
