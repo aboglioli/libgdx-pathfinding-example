@@ -22,8 +22,8 @@ public abstract class GameObject extends Actor {
         this.view = view;
         this.status = new Status();
 
-        setWidth(Grid.square * 4);
-        setHeight(Grid.square * 4);
+        setWidth(Grid.square);
+        setHeight(Grid.square);
         setBounds(0, 0, getWidth(), getHeight());
 
         setOrigin(Align.center);
@@ -62,8 +62,7 @@ public abstract class GameObject extends Actor {
     }
 
     public void addPosition(float x, float y) {
-        setX(getX() + x);
-        setY(getY() + y);
+        setPosition(getX() + x, getY() + y);
     }
 
     protected void statusChanged(String name, boolean status, boolean changed) {
@@ -92,10 +91,10 @@ public abstract class GameObject extends Actor {
 //        setY(y);
 //    }
 //
-//    @Override
-//    protected void positionChanged() {
-//        limit.setPosition(getX() + 8, getY() + 8);
-//    }
+    @Override
+    protected void positionChanged() {
+        limit.setPosition(getX(), getY());
+    }
 
     @Override
     public void act(float delta) {

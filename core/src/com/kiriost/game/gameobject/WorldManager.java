@@ -54,7 +54,7 @@ public class WorldManager extends Stage implements IMapObserver {
         PlayerView playerView = new PlayerView();
         for (int i = 0; i < 4; i++) {
             Player player = new Player(playerView);
-            player.setPosition(i * 100, i * 100);
+            player.setPosition(i * 128, i * 128);
 //            gameObjects.add(player);
             addActor(player);
 

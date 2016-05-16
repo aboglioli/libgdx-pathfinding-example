@@ -8,6 +8,7 @@ import com.kiriost.game.gameobject.GameObject;
 import com.kiriost.game.gameobject.GameView;
 import com.kiriost.game.gameobject.IActuator;
 import com.kiriost.game.mechanic.Grid;
+import com.kiriost.game.mechanic.movement.Movement;
 import com.kiriost.game.mechanic.pathfinding.Path;
 import com.kiriost.game.mechanic.pathfinding.PathFinder;
 
@@ -15,17 +16,15 @@ import com.kiriost.game.mechanic.pathfinding.PathFinder;
  * Created by kiriost on 08/04/16.
  */
 public class Player extends GameObject implements IActuator {
-    private Path path;
-    private int pathCounter = 0;
-
     private ActuatorContainer actuatorContainer;
-    private float velocity = 30f;
-    private float duration = 0f;
+    private Movement movement;
 
     public Player(GameView view) {
         super(view);
 
         setStatus("moving", false);
+
+        movement = new Movement();
 
         addCaptureListener(new InputListener() {
             @Override
@@ -37,24 +36,13 @@ public class Player extends GameObject implements IActuator {
     }
 
     public void updatePosition(float delta) {
-        if (path != null) {
-            duration += delta;
-            if(duration >= 1/30f) {
-                duration = 0f;
-                Path.Step step = path.getStep(pathCounter++);
-                float x = Grid.pixels(step.getX());
-                float y = Grid.pixels(step.getY());
-                Vector2 direction = new Vector2(x - getX(), y - getY());
+        if (movement.hasNextStep()) {
+            Vector2 pos = movement.nextStep();
 
-                setPosition(x, y);
-                setRotation(direction.angle() + 90);
-
-
-                if(path.getLength() == pathCounter) {
-                    path = null;
-                    pathCounter = 0;
-                    movementFinished();
-                }
+            addPosition(pos.x, pos.y);
+            setRotation(pos.angle() + 90);
+            if(!movement.hasNextStep()) {
+                movementFinished();
             }
         }
     }
@@ -80,6 +68,7 @@ public class Player extends GameObject implements IActuator {
     @Override
     protected void movementFinished() {
         setStatus("moving", false);
+        setPosition(Math.round(getX()), Math.round(getY()));
     }
 
     // IActuator
@@ -117,9 +106,23 @@ public class Player extends GameObject implements IActuator {
 
     @Override
     public void move(PathFinder pathFinder, int x, int y) {
-        path = pathFinder.findPath(this, Grid.units(getX()), Grid.units(getY()), Grid.units(x), Grid.units(y));
-        pathCounter = 0;
-        movementStarted();
+        if(movement.hasNextStep()) {
+            Vector2 absolutePath = movement.nextAbsoluteStep();
+
+            Path path = pathFinder.findPath(this, Grid.units(absolutePath.x), Grid.units(absolutePath.y),
+                    Grid.units(x), Grid.units(y));
+            if (path != null && path.getLength() > 0) {
+                movement.setPath(path);
+            }
+        }
+        else {
+            System.out.println("Src: " + getX() + " - " + getY());
+            Path path = pathFinder.findPath(this, Grid.units(getX()), Grid.units(getY()), Grid.units(x), Grid.units(y));
+            if (path != null && path.getLength() > 0) {
+                movement.setPath(path);
+                movementStarted();
+            }
+        }
     }
 
 }
